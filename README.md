@@ -1,105 +1,62 @@
-## Plataforma de Votação em Tempo Real — Frontend
+# Plataforma de Votação em Tempo Real — Frontend
 
-Autores:
+Breve frontend em React + TypeScript para a Plataforma de Votação em Tempo Real.
 
-# Plataforma de Votação em Tempo Real — Front-end
+Principais tecnologias: React, TypeScript, Vite, Jest.
 
-Este repositório contém o front-end da Plataforma de Votação em Tempo Real, desenvolvido em
-TypeScript com React. Abaixo estão a visão geral do projeto, objetivos, especificações e a
-estrutura de pastas proposta para facilitar a organização do código.
+## Como usar
 
-Autores:
+Pré-requisitos:
 
-- Adson Ferreira dos Santos — https://github.com/AdsonFS
-- Guilherme Fernandes Machado Borges — https://github.com/guilherme-fmb
-- João Victor Godoy da Silva — https://github.com/joaovictorgs
-- Matheus Dionisio Teixeira Andrade — https://github.com/MatheusAndrade23
+- Node.js (>= 16) e npm
 
-## VISÃO GERAL
+Instalar dependências:
 
-A Plataforma de Votação em Tempo Real é uma aplicação web que permite a criação e
-participação em enquetes de forma dinâmica, com resultados atualizados instantaneamente.
-O sistema possibilita criação de enquetes públicas ou privadas, garantindo segurança na
-votação por meio de autenticação e prevenção contra votos duplicados. A atualização dos
-resultados é feita em tempo real via WebSockets, proporcionando uma experiência interativa
-e ágil.
+```powershell
+npm install
+```
 
-## OBJETIVOS
+Rodar em desenvolvimento:
 
-1. Permitir que qualquer usuário crie enquetes personalizadas.
-2. Possibilitar votos únicos por usuário, prevenindo manipulação de resultados.
-3. Exibir resultados em tempo real através de gráficos interativos.
-4. Garantir a integridade das votações com validação de identidade e registros no banco de
-   dados.
+```powershell
+npm run dev
+```
 
-## ESPECIFICAÇÕES
+Build de produção:
 
-Tecnologia e Stack:
+```powershell
+npm run build
+```
 
-- Front-end: React (TypeScript)
-- Back-end: Node.js (TypeScript)
-- Banco de Dados: PostgreSQL
-- Comunicação em Tempo Real: Socket.IO (WebSockets)
-- Gerenciamento de Dependências: npm
-- Testes Unitários: Jest
-- Controle de Versão: Git (com PRs e revisão de código)
+Executar testes com coverage:
 
-Funcionalidades Principais:
+```powershell
+npm test -- --coverage
+```
 
-1. Criação de enquetes (título, descrição, opções, duração, público/privado).
-2. Sistema de autenticação (login social ou simples com e-mail/senha).
-3. Votação única por usuário, com prevenção contra duplicidade via banco e token JWT.
-4. Atualização dos resultados em tempo real via WebSocket.
-5. Visualização de resultados em gráficos dinâmicos (Chart.js ou Recharts).
+## Scripts úteis
 
-Testes Automatizados (sugestões):
+- npm run dev — inicia o servidor de desenvolvimento (Vite)
+- npm run build — gera bundle para produção
+- npm test — executa testes (Jest)
 
-- Testar criação de enquete.
-- Testar bloqueio e voto duplicado.
-- Testar atualização em tempo real simulando múltiplos usuários conectados.
-- Testar persistência e retorno correto dos resultados.
+## Estrutura resumida
 
-## ESTRUTURA DE PASTAS (FRONT-END)
+- src/ — código-fonte
+  - common/ — componentes reutilizáveis
+  - modules/ — recursos por domínio/feature
+  - lib/ — utilitários e cliente API
+  - services/ — chamadas à API
+  - types/ — definições TypeScript
 
-src/
-| - common (componentes reutilizáveis entre todos os módulos)
-| - modules (cada feature ou conjunto de features pertencentes ao mesmo contexto)
-| | - moduleName
-| | | - screens ou pages (telas ou páginas daquele módulo)
-| | | - components (componentes usados apenas naquele módulo)
-| | | - utils (utils específicas do módulo)
-| - types (todas as tipagens do projeto: entidades, enums, e etc.)
-| - hooks (hooks customizados)
-| - contexts (React contexts)
-| - paths.ts (rotas internas da aplicação)
-| - utils (utils globais que podem ser usados por vários módulos)
-| - lib
-| | - api
-| | - client.ts (cliente axios)
-| | - paths.ts (constantes com rotas da API usadas nos services)
-| - config.ts (arquivo de configuração do projeto)
-| - env.ts (validação e reexportação das variáveis de ambiente)
-| - services (um arquivo por interface de comunicação com a API — normalmente
-| um arquivo por rota; tipagens devem usar os tipos definidos em `types`)
+## Contribuição
 
-## CONTRIBUIÇÃO
+1. Crie uma branch: feat/minha-feature
+2. Faça commits pequenos e com mensagem descritiva
+3. Abra Pull Request e solicite revisão
 
-1. Crie uma branch com um nome claro (ex: feat/minha-feature).
-2. Faça commits pequenos e descritivos.
-3. Abra um Pull Request solicitando revisão.
+## Arquivos importantes
 
-## MAPA RÁPIDO DE ARQUIVOS IMPORTANTES
-
-- `src/paths.ts` — define as rotas da aplicação.
-- `src/config.ts` — configurações do front-end (timeouts, endpoints padrão, etc.).
-- `src/env.ts` — validação e reexportação das variáveis de ambiente.
-- `src/lib/api/client.ts` — instância do axios com interceptors.
-- `src/lib/api/paths.ts` — constantes com os endpoints da API.
-- `src/services/*` — serviços responsáveis por chamar a API.
-
-## NOTAS FINAIS
-
-Este README descreve a estrutura sugerida para manter o código organizado e facilitar
-escalabilidade. Ajustes finos podem ser feitos conforme o projeto cresce. Se quiser, eu
-posso ajudar a criar templates de componentes, imagens de arquitetura ou configurar
-ESLint/Prettier conforme essa estrutura.
+- `src/config.ts` — configurações do frontend
+- `src/env.ts` — variáveis de ambiente (validação)
+- `tests/` — testes unitários
