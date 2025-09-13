@@ -1,0 +1,15 @@
+export default {
+  root: "root",
+  title: "title",
+  subtitle: "subtitle",
+  body: "body",
+  small: "small",
+  muted: "muted",
+  success: "success",
+  error: "error",
+  form: "form",
+  placeholder: "placeholder",
+  center: "center",
+  right: "right",
+  left: "left",
+};
