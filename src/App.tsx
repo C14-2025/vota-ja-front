@@ -2,6 +2,7 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import styles from "./App.module.css";
+import { Text } from "./common";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -10,11 +11,13 @@ function App() {
     <div className={styles.app}>
       <header className={styles.header}>
         <div>
-          <h1 className={styles.title}>Plataforma de Votação em Tempo Real</h1>
-          <p className={styles.subtitle}>
+          <Text variant="title" className={styles.title}>
+            Plataforma de Votação em Tempo Real
+          </Text>
+          <Text as="p" variant="body" className={styles.subtitle}>
             Aplicação para criação e participação em enquetes com resultados
             instantâneos.
-          </p>
+          </Text>
 
           <div className={styles.authors}>
             <div className={styles.author}>
@@ -52,17 +55,21 @@ function App() {
 
       <main>
         <section className={`${styles.card} ${styles.section}`}>
-          <h2>VISÃO GERAL</h2>
-          <p>
+          <Text as="h2" variant="subtitle">
+            VISÃO GERAL
+          </Text>
+          <Text as="p" variant="body">
             A Plataforma de Votação em Tempo Real é uma aplicação web
             desenvolvida em TypeScript que permite a criação e participação em
             enquetes de forma dinâmica, com resultados atualizados
             instantaneamente.
-          </p>
+          </Text>
         </section>
 
         <section className={`${styles.card} ${styles.section}`}>
-          <h2>OBJETIVOS</h2>
+          <Text as="h2" variant="subtitle">
+            OBJETIVOS
+          </Text>
           <ol className={styles.specList}>
             <li>Permitir que qualquer usuário crie enquetes personalizadas.</li>
             <li>
@@ -80,7 +87,9 @@ function App() {
         </section>
 
         <section className={`${styles.card} ${styles.section}`}>
-          <h2>ESPECIFICAÇÕES</h2>
+          <Text as="h2" variant="subtitle">
+            ESPECIFICAÇÕES
+          </Text>
           <ul className={styles.specList}>
             <li>Front-end: React (TypeScript)</li>
             <li>Back-end: Node.js (TypeScript)</li>
@@ -100,6 +109,39 @@ function App() {
             </button>
           </div>
         </div>
+
+        {/* Demo renderizações das variantes e cores */}
+        <section className={`${styles.card} ${styles.section}`}>
+          <Text as="h2" variant="subtitle">
+            DEMO: Variantes e Cores
+          </Text>
+          <div style={{ display: "grid", gap: 8 }}>
+            <Text variant="title" as="div" color="#111827">
+              Title (default)
+            </Text>
+            <Text variant="subtitle" as="div" color="#374151">
+              Subtitle (muted)
+            </Text>
+            <Text variant="body" as="div" color="#111827">
+              Body (black)
+            </Text>
+            <Text variant="small" as="div" color="#6b7280">
+              Small (muted)
+            </Text>
+            <Text variant="success" as="div" color="#16a34a">
+              Success (green)
+            </Text>
+            <Text variant="error" as="div" color="#dc2626">
+              Error (red)
+            </Text>
+            <Text variant="form" as="div" color="#0ea5e9">
+              Form (accent)
+            </Text>
+            <Text variant="placeholder" as="div" color="#9ca3af">
+              Placeholder (gray)
+            </Text>
+          </div>
+        </section>
       </main>
 
       <footer className={styles.footer}>
