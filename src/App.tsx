@@ -110,7 +110,6 @@ function App() {
           </div>
         </div>
 
-        {/* Demo renderizações das variantes e cores */}
         <section className={`${styles.card} ${styles.section}`}>
           <Text as="h2" variant="subtitle">
             DEMO: Variantes e Cores
