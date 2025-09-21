@@ -1,0 +1,23 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  transition: opacity 120ms ease-in-out, transform 120ms ease-in-out;
+}
+.root:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+.root:active:not(:disabled) {
+  opacity: 0.6;
+  transform: scale(0.98);
+}
+.placeholder {
+  display: inline-block;
+  background: var(--muted-color, #e5e7eb);
+  border-radius: 4px;
+}
