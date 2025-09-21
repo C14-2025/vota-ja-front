@@ -2,7 +2,8 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import styles from "./App.module.css";
-import { Text } from "./common";
+import { Text, IconButton, AppToast, appToast } from "./common";
+import { ArrowUp, Heart, Gear } from "phosphor-react";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -114,6 +115,69 @@ function App() {
           <Text as="h2" variant="subtitle">
             DEMO: Variantes e Cores
           </Text>
+          <div style={{ marginTop: 12 }}>
+            <Text as="h3" variant="small">
+              IconButton - exemplos
+            </Text>
+            <div
+              style={{
+                display: "flex",
+                gap: 12,
+                alignItems: "center",
+                marginTop: 8,
+              }}
+            >
+              <IconButton
+                Icon={ArrowUp}
+                size={16}
+                aria-label="up"
+                onClick={() => appToast.info("Up clicked")}
+              />
+              <IconButton
+                Icon={Heart}
+                size={24}
+                color="#e11d48"
+                aria-label="like"
+                onClick={() => appToast.success("Liked")}
+              />
+              <IconButton
+                Icon={Gear}
+                size={32}
+                color="#0ea5e9"
+                aria-label="settings"
+                onClick={() => appToast.warn("Settings changed")}
+              />
+              <IconButton
+                src={reactLogo}
+                size={28}
+                aria-label="react"
+                onClick={() => appToast.info("React logo clicked")}
+              />
+              <IconButton
+                Icon={ArrowUp}
+                size={24}
+                disabled
+                aria-label="disabled"
+                onClick={() => appToast.error("Disabled button clicked")}
+              />
+            </div>
+            <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+              <IconButton
+                Icon={Heart}
+                size={18}
+                color="#f97316"
+                aria-label="heart-small"
+                onClick={() => appToast.success("Small heart")}
+              />
+              <IconButton
+                Icon={Heart}
+                size={36}
+                color="#10b981"
+                aria-label="heart-large"
+                onClick={() => appToast.success("Large heart")}
+              />
+            </div>
+          </div>
           <div style={{ display: "grid", gap: 8 }}>
             <Text variant="title" as="div" color="#111827">
               Title (default)
@@ -146,6 +210,7 @@ function App() {
       <footer className={styles.footer}>
         <div>Informações do projeto e referências.</div>
       </footer>
+      <AppToast />
     </div>
   );
 }
