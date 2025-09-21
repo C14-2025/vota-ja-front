@@ -2,7 +2,7 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import styles from "./App.module.css";
-import { Text, IconButton } from "./common";
+import { Text, IconButton, AppToast, appToast } from "./common";
 import { ArrowUp, Heart, Gear } from "phosphor-react";
 
 function App() {
@@ -131,34 +131,34 @@ function App() {
                 Icon={ArrowUp}
                 size={16}
                 aria-label="up"
-                onClick={() => console.log("IconButton: up clicked")}
+                onClick={() => appToast.info("Up clicked")}
               />
               <IconButton
                 Icon={Heart}
                 size={24}
                 color="#e11d48"
                 aria-label="like"
-                onClick={() => console.log("IconButton: like clicked")}
+                onClick={() => appToast.success("Liked")}
               />
               <IconButton
                 Icon={Gear}
                 size={32}
                 color="#0ea5e9"
                 aria-label="settings"
-                onClick={() => console.log("IconButton: settings clicked")}
+                onClick={() => appToast.warn("Settings changed")}
               />
               <IconButton
                 src={reactLogo}
                 size={28}
                 aria-label="react"
-                onClick={() => console.log("IconButton: react clicked")}
+                onClick={() => appToast.info("React logo clicked")}
               />
               <IconButton
                 Icon={ArrowUp}
                 size={24}
                 disabled
                 aria-label="disabled"
-                onClick={() => console.log("IconButton: disabled clicked")}
+                onClick={() => appToast.error("Disabled button clicked")}
               />
             </div>
             <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
@@ -167,14 +167,14 @@ function App() {
                 size={18}
                 color="#f97316"
                 aria-label="heart-small"
-                onClick={() => console.log("IconButton: heart-small clicked")}
+                onClick={() => appToast.success("Small heart")}
               />
               <IconButton
                 Icon={Heart}
                 size={36}
                 color="#10b981"
                 aria-label="heart-large"
-                onClick={() => console.log("IconButton: heart-large clicked")}
+                onClick={() => appToast.success("Large heart")}
               />
             </div>
           </div>
@@ -210,6 +210,7 @@ function App() {
       <footer className={styles.footer}>
         <div>Informações do projeto e referências.</div>
       </footer>
+      <AppToast />
     </div>
   );
 }
