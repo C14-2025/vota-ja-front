@@ -2,7 +2,8 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import styles from "./App.module.css";
-import { Text } from "./common";
+import { Text, IconButton } from "./common";
+import { ArrowUp, Heart, Gear } from "phosphor-react";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -114,6 +115,69 @@ function App() {
           <Text as="h2" variant="subtitle">
             DEMO: Variantes e Cores
           </Text>
+          <div style={{ marginTop: 12 }}>
+            <Text as="h3" variant="small">
+              IconButton - exemplos
+            </Text>
+            <div
+              style={{
+                display: "flex",
+                gap: 12,
+                alignItems: "center",
+                marginTop: 8,
+              }}
+            >
+              <IconButton
+                Icon={ArrowUp}
+                size={16}
+                aria-label="up"
+                onClick={() => console.log("IconButton: up clicked")}
+              />
+              <IconButton
+                Icon={Heart}
+                size={24}
+                color="#e11d48"
+                aria-label="like"
+                onClick={() => console.log("IconButton: like clicked")}
+              />
+              <IconButton
+                Icon={Gear}
+                size={32}
+                color="#0ea5e9"
+                aria-label="settings"
+                onClick={() => console.log("IconButton: settings clicked")}
+              />
+              <IconButton
+                src={reactLogo}
+                size={28}
+                aria-label="react"
+                onClick={() => console.log("IconButton: react clicked")}
+              />
+              <IconButton
+                Icon={ArrowUp}
+                size={24}
+                disabled
+                aria-label="disabled"
+                onClick={() => console.log("IconButton: disabled clicked")}
+              />
+            </div>
+            <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+              <IconButton
+                Icon={Heart}
+                size={18}
+                color="#f97316"
+                aria-label="heart-small"
+                onClick={() => console.log("IconButton: heart-small clicked")}
+              />
+              <IconButton
+                Icon={Heart}
+                size={36}
+                color="#10b981"
+                aria-label="heart-large"
+                onClick={() => console.log("IconButton: heart-large clicked")}
+              />
+            </div>
+          </div>
           <div style={{ display: "grid", gap: 8 }}>
             <Text variant="title" as="div" color="#111827">
               Title (default)
