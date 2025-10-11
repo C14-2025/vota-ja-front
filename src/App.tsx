@@ -2,11 +2,24 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import styles from "./App.module.css";
-import { Text, IconButton, AppToast, appToast } from "./common";
-import { ArrowUp, Heart, Gear } from "phosphor-react";
+import { Text, IconButton, AppToast, appToast, Input, Button } from "./common";
+import {
+  ArrowUp,
+  Heart,
+  Gear,
+  User,
+  Lock,
+  PaperPlaneTilt,
+  Plus,
+  Trash,
+} from "phosphor-react";
 
 function App() {
   const [count, setCount] = useState(0);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className={styles.app}>
@@ -113,7 +126,243 @@ function App() {
 
         <section className={`${styles.card} ${styles.section}`}>
           <Text as="h2" variant="subtitle">
-            DEMO: Variantes e Cores
+            DEMO: Input Component
+          </Text>
+          <div
+            style={{
+              marginTop: 16,
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+              maxWidth: 400,
+            }}
+          >
+            <Input
+              label="Email"
+              type="email"
+              placeholder="Digite seu email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              fullWidth
+            />
+
+            <Input
+              label="Senha"
+              type="password"
+              placeholder="Digite sua senha"
+              helperText="Mínimo 8 caracteres"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              fullWidth
+            />
+
+            <Input
+              label="Nome de usuário"
+              type="text"
+              placeholder="Digite seu nome"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              fullWidth
+            />
+
+            <Input
+              label="Email com erro"
+              type="email"
+              placeholder="exemplo@email.com"
+              error="Email inválido"
+              defaultValue="email-invalido"
+              fullWidth
+            />
+
+            <Input
+              label="Campo com sucesso"
+              type="text"
+              variant="success"
+              defaultValue="Validado com sucesso!"
+              helperText="Este campo está correto"
+              fullWidth
+            />
+
+            <Input
+              label="Campo desabilitado"
+              type="text"
+              placeholder="Campo desabilitado"
+              disabled
+              fullWidth
+            />
+          </div>
+        </section>
+
+        <section className={`${styles.card} ${styles.section}`}>
+          <Text as="h2" variant="subtitle">
+            DEMO: Button Component
+          </Text>
+          <div
+            style={{
+              marginTop: 16,
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+            }}
+          >
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <Button
+                variant="primary"
+                onClick={() => appToast.info("Primary button clicked")}
+              >
+                Primary
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => appToast.info("Secondary button clicked")}
+              >
+                Secondary
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => appToast.info("Ghost button clicked")}
+              >
+                Ghost
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => appToast.info("Outline button clicked")}
+              >
+                Outline
+              </Button>
+              <Button
+                variant="success"
+                onClick={() => appToast.success("Success!")}
+              >
+                Success
+              </Button>
+              <Button
+                variant="danger"
+                onClick={() => appToast.error("Danger!")}
+              >
+                Danger
+              </Button>
+            </div>
+
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <Button size="small">Small</Button>
+              <Button size="medium">Medium</Button>
+              <Button size="large">Large</Button>
+            </div>
+
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <Button leftIcon={User}>Com ícone esquerdo</Button>
+              <Button rightIcon={PaperPlaneTilt}>Com ícone direito</Button>
+              <Button leftIcon={Plus} rightIcon={PaperPlaneTilt}>
+                Ambos os ícones
+              </Button>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                gap: 8,
+                flexDirection: "column",
+                maxWidth: 300,
+              }}
+            >
+              <Button fullWidth>Largura total</Button>
+              <Button
+                fullWidth
+                variant="success"
+                loading={loading}
+                onClick={() => {
+                  setLoading(true);
+                  setTimeout(() => {
+                    setLoading(false);
+                    appToast.success("Ação completada!");
+                  }, 2000);
+                }}
+              >
+                {loading ? "Carregando..." : "Clique para carregar"}
+              </Button>
+            </div>
+
+            <div style={{ display: "flex", gap: 8 }}>
+              <Button disabled>Desabilitado</Button>
+              <Button variant="outline" disabled>
+                Outline Desabilitado
+              </Button>
+            </div>
+
+            <div style={{ display: "flex", gap: 8 }}>
+              <Button
+                variant="primary"
+                leftIcon={Lock}
+                onClick={() => appToast.info("Login simulado")}
+              >
+                Login
+              </Button>
+              <Button
+                variant="danger"
+                leftIcon={Trash}
+                size="small"
+                onClick={() => appToast.error("Item deletado")}
+              >
+                Deletar
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        <section className={`${styles.card} ${styles.section}`}>
+          <Text as="h2" variant="subtitle">
+            DEMO: Formulário Completo
+          </Text>
+          <form
+            style={{
+              marginTop: 16,
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+              maxWidth: 400,
+            }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              appToast.success("Formulário enviado com sucesso!");
+            }}
+          >
+            <Input
+              label="Email"
+              type="email"
+              placeholder="seu-email@exemplo.com"
+              required
+              fullWidth
+            />
+
+            <Input
+              label="Senha"
+              type="password"
+              placeholder="Digite sua senha"
+              helperText="Deve conter pelo menos 8 caracteres"
+              required
+              fullWidth
+            />
+
+            <div style={{ display: "flex", gap: 8 }}>
+              <Button type="submit" variant="primary" leftIcon={PaperPlaneTilt}>
+                Enviar
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => appToast.info("Cancelado")}
+              >
+                Cancelar
+              </Button>
+            </div>
+          </form>
+        </section>
+
+        <section className={`${styles.card} ${styles.section}`}>
+          <Text as="h2" variant="subtitle">
+            DEMO: IconButton e Text
           </Text>
           <div style={{ marginTop: 12 }}>
             <Text as="h3" variant="small">
