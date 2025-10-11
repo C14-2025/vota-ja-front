@@ -1,0 +1,138 @@
+.inputWrapper {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  display: block;
+}
+
+.required {
+  color: var(--danger, #ef4444);
+}
+
+.inputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--surface, #121418);
+  color: var(--text, #e6eef6);
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: border-color 150ms, box-shadow 150ms;
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--muted, #9aa4b2);
+}
+
+.input:focus {
+  border-color: var(--primary-600, #6366f1);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.hasLeftIcon {
+  padding-left: 2.5rem;
+}
+
+.hasRightIcon {
+  padding-right: 2.5rem;
+}
+
+.leftIconContainer {
+  position: absolute;
+  left: 0.75rem;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.rightIconContainer {
+  position: absolute;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: background-color 120ms, opacity 120ms;
+}
+
+.passwordToggle:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.passwordToggle:active:not(:disabled) {
+  opacity: 0.7;
+}
+
+.passwordToggle:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.input.error {
+  border-color: var(--danger, #ef4444);
+}
+
+.input.error:focus {
+  border-color: var(--danger, #ef4444);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12);
+}
+
+.input.success {
+  border-color: var(--success, #10b981);
+}
+
+.input.success:focus {
+  border-color: var(--success, #10b981);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
+}
+
+.errorText {
+  font-size: 0.875rem;
+  color: var(--danger, #ef4444);
+}
+
+.helperText {
+  font-size: 0.875rem;
+  color: var(--muted, #9aa4b2);
+}
+
+.disabled {
+  opacity: 0.6;
+}
