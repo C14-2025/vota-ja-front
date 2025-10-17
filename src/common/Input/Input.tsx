@@ -1,25 +1,25 @@
-import React, { useState } from "react";
-import { Eye, EyeSlash } from "phosphor-react";
-import styles from "./Input.module.css";
-import type { InputProps } from "../../types/input";
+import React, { useState } from 'react';
+import { Eye, EyeSlash } from 'phosphor-react';
+import styles from './Input.module.css';
+import type { InputProps } from '../../types/input';
 
 export const Input: React.FC<InputProps> = ({
-  variant = "default",
+  variant = 'default',
   label,
   error,
   helperText,
   fullWidth = false,
   leftIcon: LeftIcon,
   rightIcon: RightIcon,
-  type = "text",
+  type = 'text',
   className,
   disabled,
   ...rest
 }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const isPassword = type === "password";
-  const effectiveType = isPassword && showPassword ? "text" : type;
-  const effectiveVariant = error ? "error" : variant;
+  const isPassword = type === 'password';
+  const effectiveType = isPassword && showPassword ? 'text' : type;
+  const effectiveVariant = error ? 'error' : variant;
 
   const inputWrapperClass = [
     styles.inputWrapper,
@@ -27,7 +27,7 @@ export const Input: React.FC<InputProps> = ({
     disabled && styles.disabled,
   ]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   const inputClass = [
     styles.input,
@@ -37,7 +37,7 @@ export const Input: React.FC<InputProps> = ({
     className,
   ]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   return (
     <div className={inputWrapperClass}>
@@ -66,7 +66,7 @@ export const Input: React.FC<InputProps> = ({
             type="button"
             className={styles.passwordToggle}
             onClick={() => setShowPassword(!showPassword)}
-            aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+            aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
             tabIndex={-1}
             disabled={disabled}
           >

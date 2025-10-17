@@ -1,11 +1,11 @@
-import React from "react";
-import { CircleNotch } from "phosphor-react";
-import styles from "./Button.module.css";
-import type { ButtonProps } from "../../types/button";
+import React from 'react';
+import { CircleNotch } from 'phosphor-react';
+import styles from './Button.module.css';
+import type { ButtonProps } from '../../types/button';
 
 export const Button: React.FC<ButtonProps> = ({
-  variant = "primary",
-  size = "medium",
+  variant = 'primary',
+  size = 'medium',
   fullWidth = false,
   loading = false,
   leftIcon: LeftIcon,
@@ -13,7 +13,7 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   className,
   disabled,
-  type = "button",
+  type = 'button',
   ...rest
 }) => {
   const isDisabled = disabled || loading;
@@ -27,9 +27,9 @@ export const Button: React.FC<ButtonProps> = ({
     className,
   ]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
-  const iconSize = size === "small" ? 16 : size === "large" ? 24 : 20;
+  const iconSize = size === 'small' ? 16 : size === 'large' ? 24 : 20;
 
   return (
     <button

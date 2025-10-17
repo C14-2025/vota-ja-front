@@ -6,7 +6,9 @@
   border: none;
   padding: 4px;
   cursor: pointer;
-  transition: opacity 120ms ease-in-out, transform 120ms ease-in-out;
+  transition:
+    opacity 120ms ease-in-out,
+    transform 120ms ease-in-out;
 }
 .root:disabled {
   cursor: default;

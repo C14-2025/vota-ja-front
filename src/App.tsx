@@ -1,8 +1,8 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import styles from "./App.module.css";
-import { Text, IconButton, AppToast, appToast, Input, Button } from "./common";
+import { useState } from 'react';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import styles from './App.module.css';
+import { Text, IconButton, AppToast, appToast, Input, Button } from './common';
 import {
   ArrowUp,
   Heart,
@@ -12,13 +12,13 @@ import {
   PaperPlaneTilt,
   Plus,
   Trash,
-} from "phosphor-react";
+} from 'phosphor-react';
 
 function App() {
   const [count, setCount] = useState(0);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
 
   return (
@@ -35,25 +35,25 @@ function App() {
 
           <div className={styles.authors}>
             <div className={styles.author}>
-              Adson Ferreira dos Santos —{" "}
+              Adson Ferreira dos Santos —{' '}
               <a href="https://github.com/AdsonFS" target="_blank">
                 github.com/AdsonFS
               </a>
             </div>
             <div className={styles.author}>
-              Guilherme Fernandes Machado Borges —{" "}
+              Guilherme Fernandes Machado Borges —{' '}
               <a href="https://github.com/guilherme-fmb" target="_blank">
                 github.com/guilherme-fmb
               </a>
             </div>
             <div className={styles.author}>
-              João Victor Godoy da Silva —{" "}
+              João Victor Godoy da Silva —{' '}
               <a href="https://github.com/joaovictorgs" target="_blank">
                 github.com/joaovictorgs
               </a>
             </div>
             <div className={styles.author}>
-              Matheus Dionisio Teixeira Andrade —{" "}
+              Matheus Dionisio Teixeira Andrade —{' '}
               <a href="https://github.com/MatheusAndrade23" target="_blank">
                 github.com/MatheusAndrade23
               </a>
@@ -131,8 +131,8 @@ function App() {
           <div
             style={{
               marginTop: 16,
-              display: "flex",
-              flexDirection: "column",
+              display: 'flex',
+              flexDirection: 'column',
               gap: 16,
               maxWidth: 400,
             }}
@@ -201,57 +201,57 @@ function App() {
           <div
             style={{
               marginTop: 16,
-              display: "flex",
-              flexDirection: "column",
+              display: 'flex',
+              flexDirection: 'column',
               gap: 16,
             }}
           >
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               <Button
                 variant="primary"
-                onClick={() => appToast.info("Primary button clicked")}
+                onClick={() => appToast.info('Primary button clicked')}
               >
                 Primary
               </Button>
               <Button
                 variant="secondary"
-                onClick={() => appToast.info("Secondary button clicked")}
+                onClick={() => appToast.info('Secondary button clicked')}
               >
                 Secondary
               </Button>
               <Button
                 variant="ghost"
-                onClick={() => appToast.info("Ghost button clicked")}
+                onClick={() => appToast.info('Ghost button clicked')}
               >
                 Ghost
               </Button>
               <Button
                 variant="outline"
-                onClick={() => appToast.info("Outline button clicked")}
+                onClick={() => appToast.info('Outline button clicked')}
               >
                 Outline
               </Button>
               <Button
                 variant="success"
-                onClick={() => appToast.success("Success!")}
+                onClick={() => appToast.success('Success!')}
               >
                 Success
               </Button>
               <Button
                 variant="danger"
-                onClick={() => appToast.error("Danger!")}
+                onClick={() => appToast.error('Danger!')}
               >
                 Danger
               </Button>
             </div>
 
-            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
               <Button size="small">Small</Button>
               <Button size="medium">Medium</Button>
               <Button size="large">Large</Button>
             </div>
 
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               <Button leftIcon={User}>Com ícone esquerdo</Button>
               <Button rightIcon={PaperPlaneTilt}>Com ícone direito</Button>
               <Button leftIcon={Plus} rightIcon={PaperPlaneTilt}>
@@ -261,9 +261,9 @@ function App() {
 
             <div
               style={{
-                display: "flex",
+                display: 'flex',
                 gap: 8,
-                flexDirection: "column",
+                flexDirection: 'column',
                 maxWidth: 300,
               }}
             >
@@ -276,26 +276,26 @@ function App() {
                   setLoading(true);
                   setTimeout(() => {
                     setLoading(false);
-                    appToast.success("Ação completada!");
+                    appToast.success('Ação completada!');
                   }, 2000);
                 }}
               >
-                {loading ? "Carregando..." : "Clique para carregar"}
+                {loading ? 'Carregando...' : 'Clique para carregar'}
               </Button>
             </div>
 
-            <div style={{ display: "flex", gap: 8 }}>
+            <div style={{ display: 'flex', gap: 8 }}>
               <Button disabled>Desabilitado</Button>
               <Button variant="outline" disabled>
                 Outline Desabilitado
               </Button>
             </div>
 
-            <div style={{ display: "flex", gap: 8 }}>
+            <div style={{ display: 'flex', gap: 8 }}>
               <Button
                 variant="primary"
                 leftIcon={Lock}
-                onClick={() => appToast.info("Login simulado")}
+                onClick={() => appToast.info('Login simulado')}
               >
                 Login
               </Button>
@@ -303,7 +303,7 @@ function App() {
                 variant="danger"
                 leftIcon={Trash}
                 size="small"
-                onClick={() => appToast.error("Item deletado")}
+                onClick={() => appToast.error('Item deletado')}
               >
                 Deletar
               </Button>
@@ -318,14 +318,14 @@ function App() {
           <form
             style={{
               marginTop: 16,
-              display: "flex",
-              flexDirection: "column",
+              display: 'flex',
+              flexDirection: 'column',
               gap: 16,
               maxWidth: 400,
             }}
             onSubmit={(e) => {
               e.preventDefault();
-              appToast.success("Formulário enviado com sucesso!");
+              appToast.success('Formulário enviado com sucesso!');
             }}
           >
             <Input
@@ -345,14 +345,14 @@ function App() {
               fullWidth
             />
 
-            <div style={{ display: "flex", gap: 8 }}>
+            <div style={{ display: 'flex', gap: 8 }}>
               <Button type="submit" variant="primary" leftIcon={PaperPlaneTilt}>
                 Enviar
               </Button>
               <Button
                 type="button"
                 variant="ghost"
-                onClick={() => appToast.info("Cancelado")}
+                onClick={() => appToast.info('Cancelado')}
               >
                 Cancelar
               </Button>
@@ -370,9 +370,9 @@ function App() {
             </Text>
             <div
               style={{
-                display: "flex",
+                display: 'flex',
                 gap: 12,
-                alignItems: "center",
+                alignItems: 'center',
                 marginTop: 8,
               }}
             >
@@ -380,54 +380,54 @@ function App() {
                 Icon={ArrowUp}
                 size={16}
                 aria-label="up"
-                onClick={() => appToast.info("Up clicked")}
+                onClick={() => appToast.info('Up clicked')}
               />
               <IconButton
                 Icon={Heart}
                 size={24}
                 color="#e11d48"
                 aria-label="like"
-                onClick={() => appToast.success("Liked")}
+                onClick={() => appToast.success('Liked')}
               />
               <IconButton
                 Icon={Gear}
                 size={32}
                 color="#0ea5e9"
                 aria-label="settings"
-                onClick={() => appToast.warn("Settings changed")}
+                onClick={() => appToast.warn('Settings changed')}
               />
               <IconButton
                 src={reactLogo}
                 size={28}
                 aria-label="react"
-                onClick={() => appToast.info("React logo clicked")}
+                onClick={() => appToast.info('React logo clicked')}
               />
               <IconButton
                 Icon={ArrowUp}
                 size={24}
                 disabled
                 aria-label="disabled"
-                onClick={() => appToast.error("Disabled button clicked")}
+                onClick={() => appToast.error('Disabled button clicked')}
               />
             </div>
-            <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+            <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
               <IconButton
                 Icon={Heart}
                 size={18}
                 color="#f97316"
                 aria-label="heart-small"
-                onClick={() => appToast.success("Small heart")}
+                onClick={() => appToast.success('Small heart')}
               />
               <IconButton
                 Icon={Heart}
                 size={36}
                 color="#10b981"
                 aria-label="heart-large"
-                onClick={() => appToast.success("Large heart")}
+                onClick={() => appToast.success('Large heart')}
               />
             </div>
           </div>
-          <div style={{ display: "grid", gap: 8 }}>
+          <div style={{ display: 'grid', gap: 8 }}>
             <Text variant="title" as="div" color="#111827">
               Title (default)
             </Text>

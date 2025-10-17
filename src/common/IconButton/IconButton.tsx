@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "./IconButton.module.css";
+import React from 'react';
+import styles from './IconButton.module.css';
 
 export type IconButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   Icon?: React.ComponentType<{ size?: number | string; color?: string }>;
@@ -17,12 +17,12 @@ export const IconButton: React.FC<IconButtonProps> = ({
   children,
   ...rest
 }) => {
-  const sizeStyle = typeof size === "number" ? `${size}px` : size;
+  const sizeStyle = typeof size === 'number' ? `${size}px` : size;
 
   return (
     <button
       type="button"
-      className={[styles.root, className].filter(Boolean).join(" ")}
+      className={[styles.root, className].filter(Boolean).join(' ')}
       {...rest}
     >
       {Icon ? (
@@ -30,7 +30,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
       ) : src ? (
         <img
           src={src}
-          alt={rest?.["aria-label"] ? String(rest["aria-label"]) : "icon"}
+          alt={rest?.['aria-label'] ? String(rest['aria-label']) : 'icon'}
           style={{ width: sizeStyle, height: sizeStyle }}
         />
       ) : (
