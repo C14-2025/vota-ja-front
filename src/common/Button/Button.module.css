@@ -8,7 +8,10 @@
   border-radius: 8px;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: background-color 150ms, border-color 150ms, transform 80ms,
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    transform 80ms,
     opacity 150ms;
   outline: none;
   white-space: nowrap;

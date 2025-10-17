@@ -1,7 +1,7 @@
-export type InputVariant = "default" | "error" | "success";
+export type InputVariant = 'default' | 'error' | 'success';
 
 export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   variant?: InputVariant;
   label?: string;
   error?: string;

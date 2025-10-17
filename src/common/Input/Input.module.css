@@ -35,7 +35,9 @@
   font-family: inherit;
   font-size: 1rem;
   line-height: 1.5;
-  transition: border-color 150ms, box-shadow 150ms;
+  transition:
+    border-color 150ms,
+    box-shadow 150ms;
   outline: none;
 }
 
@@ -89,7 +91,9 @@
   cursor: pointer;
   padding: 0.25rem;
   border-radius: 4px;
-  transition: background-color 120ms, opacity 120ms;
+  transition:
+    background-color 120ms,
+    opacity 120ms;
 }
 
 .passwordToggle:hover:not(:disabled) {

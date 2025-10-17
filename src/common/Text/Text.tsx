@@ -1,10 +1,10 @@
-import React from "react";
-import styles from "./Text.module.css";
-import type { TextProps } from "../../types/text";
+import React from 'react';
+import styles from './Text.module.css';
+import type { TextProps } from '../../types/text';
 
 export const Text: React.FC<TextProps> = ({
-  variant = "body",
-  as: asProp = "span",
+  variant = 'body',
+  as: asProp = 'span',
   children,
   className,
   color,
@@ -25,7 +25,7 @@ export const Text: React.FC<TextProps> = ({
     <Component
       className={[styles.root, variantClass, alignClass, className]
         .filter(Boolean)
-        .join(" ")}
+        .join(' ')}
       style={combinedStyle}
       {...rest}
     >
