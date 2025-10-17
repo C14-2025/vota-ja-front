@@ -9,14 +9,13 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  push:
-    branches: [main, feat/form-component]
   pull_request:
     branches: [main]
+    types: [opened, synchronize, reopened]
 
 jobs:
-  format:
-    name: Format (Prettier)
+  format-check:
+    name: Check Format (Prettier)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,28 +31,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Check formatting
-        id: fmtcheck
-        run: |
-          npx prettier --check "src/**/*.{ts,tsx,js,jsx,css,json}" || echo "needs-fix" > needs_fix.txt
-
-      - name: Apply formatting
-        if: hashFiles('needs_fix.txt') != ''
-        run: npx prettier --write "src/**/*.{ts,tsx,js,jsx,css,json}"
-
-      - name: Commit formatted files
-        if: hashFiles('needs_fix.txt') != ''
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git diff --quiet && git diff --staged --quiet || git commit -m "style: auto-format with prettier [skip ci]"
-          git push
+      - name: Check formatting with Prettier
+        run: npx prettier --check "src/**/*.{ts,tsx,js,jsx,css,json}"
 
   run-tests:
     name: Run tests
     runs-on: ubuntu-latest
-    needs: [format]
+    needs: [format-check]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
