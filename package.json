@@ -14,16 +14,20 @@
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,css,json}\""
   },
   "dependencies": {
+    "axios": "^1.6.2",
     "phosphor-react": "^1.4.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-router-dom": "^6.20.1",
     "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
     "@types/jest": "^29.5.2",
+    "@types/node": "^20.10.5",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
+    "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^5.0.0",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
