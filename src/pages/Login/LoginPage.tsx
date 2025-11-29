@@ -1,43 +1,88 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '../../contexts';
+import { Input, Button } from '../../common';
+import { loginSchema } from '../../utils/validation';
+import type { LoginFormData } from '../../utils/validation';
+import styles from './LoginPage.module.css';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
-    login();
-    navigate('/home');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: LoginFormData) => {
+    setLoading(true);
+    console.log('Login:', data);
+
+    setTimeout(() => {
+      login();
+      navigate('/home');
+    }, 1000);
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        gap: '20px',
-      }}
-    >
-      <h1>Login</h1>
-      <p>Faça login para acessar o sistema</p>
-      <button
-        onClick={handleLogin}
-        style={{
-          padding: '10px 20px',
-          fontSize: '16px',
-          cursor: 'pointer',
-          borderRadius: '5px',
-          border: 'none',
-          background: '#6366f1',
-          color: 'white',
-        }}
-      >
-        Entrar
-      </button>
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <div className={styles.header}>
+          <h1 className={styles.brand}>Vota Já</h1>
+          <h2 className={styles.title}>LOGIN</h2>
+        </div>
+
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <Input
+            id="email"
+            type="email"
+            label="Email"
+            placeholder="seu@email.com"
+            error={errors.email?.message}
+            fullWidth
+            {...register('email')}
+          />
+
+          <Input
+            id="password"
+            type="password"
+            label="Senha"
+            placeholder="••••••••"
+            error={errors.password?.message}
+            fullWidth
+            {...register('password')}
+          />
+
+          <Button
+            type="submit"
+            variant="primary"
+            size="large"
+            fullWidth
+            loading={loading}
+          >
+            Entrar
+          </Button>
+        </form>
+
+        <div className={styles.footer}>
+          <p className={styles.footerText}>
+            Não tem uma conta?{' '}
+            <span
+              className={styles.footerLink}
+              onClick={() => navigate('/register')}
+            >
+              Cadastre-se
+            </span>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
