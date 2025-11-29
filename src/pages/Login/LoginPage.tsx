@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts';
+import { Button, Input } from '../../common';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
     login();
     navigate('/home');
   };
@@ -24,20 +28,34 @@ export const LoginPage: React.FC = () => {
     >
       <h1>Login</h1>
       <p>Faça login para acessar o sistema</p>
-      <button
-        onClick={handleLogin}
+      <form
+        onSubmit={handleLogin}
         style={{
-          padding: '10px 20px',
-          fontSize: '16px',
-          cursor: 'pointer',
-          borderRadius: '5px',
-          border: 'none',
-          background: '#6366f1',
-          color: 'white',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
+          width: '100%',
+          maxWidth: '320px',
         }}
       >
-        Entrar
-      </button>
+        <Input
+          label="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          fullWidth
+        />
+        <Input
+          label="Senha"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          fullWidth
+        />
+        <Button type="submit" fullWidth>
+          Entrar
+        </Button>
+      </form>
     </div>
   );
 };
