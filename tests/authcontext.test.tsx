@@ -1,13 +1,13 @@
-import { render, act } from '@testing-library/react';
+import { render, act, screen } from '@testing-library/react';
 import { AuthProvider, useAuth } from '../src/contexts/AuthContext';
 
 describe('AuthContext', () => {
   it('should start with isAuthenticated as false', () => {
-    let authValue: any;
-
     const TestComponent = () => {
-      authValue = useAuth();
-      return null;
+      const { isAuthenticated } = useAuth();
+      return (
+        <div>{isAuthenticated ? 'authenticated' : 'not authenticated'}</div>
+      );
     };
 
     render(
@@ -16,15 +16,18 @@ describe('AuthContext', () => {
       </AuthProvider>
     );
 
-    expect(authValue.isAuthenticated).toBe(false);
+    expect(screen.getByText('not authenticated')).toBeTruthy();
   });
 
   it('should set isAuthenticated to true when login is called', () => {
-    let authValue: any;
-
     const TestComponent = () => {
-      authValue = useAuth();
-      return null;
+      const { isAuthenticated, login } = useAuth();
+      return (
+        <div>
+          <span>{isAuthenticated ? 'authenticated' : 'not authenticated'}</span>
+          <button onClick={login}>Login</button>
+        </div>
+      );
     };
 
     render(
@@ -33,19 +36,25 @@ describe('AuthContext', () => {
       </AuthProvider>
     );
 
+    expect(screen.getByText('not authenticated')).toBeTruthy();
+
     act(() => {
-      authValue.login();
+      screen.getByText('Login').click();
     });
 
-    expect(authValue.isAuthenticated).toBe(true);
+    expect(screen.getByText('authenticated')).toBeTruthy();
   });
 
   it('should set isAuthenticated to false when logout is called', () => {
-    let authValue: any;
-
     const TestComponent = () => {
-      authValue = useAuth();
-      return null;
+      const { isAuthenticated, login, logout } = useAuth();
+      return (
+        <div>
+          <span>{isAuthenticated ? 'authenticated' : 'not authenticated'}</span>
+          <button onClick={login}>Login</button>
+          <button onClick={logout}>Logout</button>
+        </div>
+      );
     };
 
     render(
@@ -55,13 +64,13 @@ describe('AuthContext', () => {
     );
 
     act(() => {
-      authValue.login();
+      screen.getByText('Login').click();
     });
-    expect(authValue.isAuthenticated).toBe(true);
+    expect(screen.getByText('authenticated')).toBeTruthy();
 
     act(() => {
-      authValue.logout();
+      screen.getByText('Logout').click();
     });
-    expect(authValue.isAuthenticated).toBe(false);
+    expect(screen.getByText('not authenticated')).toBeTruthy();
   });
 });
