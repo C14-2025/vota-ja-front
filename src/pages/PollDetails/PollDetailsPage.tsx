@@ -69,20 +69,32 @@ export const PollDetailsPage: React.FC = () => {
   useEffect(() => {
     if (!id) return;
 
-    socketService.connect();
-    socketService.joinPoll(id);
+    let mounted = true;
 
-    socketService.onPollUpdated((data) => {
-      const event = data as PollUpdateEvent;
-      console.log('Poll update received:', event);
-      if (event.pollId === id) {
-        console.log('Reloading poll data...');
-        loadPoll();
+    const setupSocket = async () => {
+      try {
+        await socketService.connect();
+
+        if (!mounted) return;
+
+        await socketService.joinPoll(id);
+
+        socketService.onPollUpdated((data) => {
+          const event = data as PollUpdateEvent;
+          if (event.pollId === id && mounted) {
+            loadPoll();
+          }
+        });
+      } catch (error) {
+        console.error('Socket setup error:', error);
       }
-    });
+    };
+
+    setupSocket();
 
     return () => {
-      socketService.offPollUpdated();
+      mounted = false;
+      socketService.leavePoll();
     };
   }, [id, loadPoll]);
 
