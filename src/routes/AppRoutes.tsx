@@ -15,11 +15,11 @@ export const AppRoutes: React.FC = () => {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/polls/:id" element={<PollDetailsPage />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route path="/home" element={<HomePage />} />
           <Route path="/polls/create" element={<CreatePollPage />} />
-          <Route path="/polls/:id" element={<PollDetailsPage />} />
         </Route>
 
         <Route path="/" element={<Navigate to="/home" replace />} />
