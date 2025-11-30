@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts';
-import { getPolls } from '../../services/api';
+import { getPolls } from '../../services/pollService';
 import type { Poll } from '../../types/poll';
 import { Button } from '../../common/Button';
 import { ChartBar, CheckSquare, Calendar, User } from 'phosphor-react';

@@ -9,10 +9,10 @@ import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { HomePage } from '../src/pages/Home/HomePage';
 import { AuthContext } from '../src/contexts/AuthContext';
-import * as apiService from '../src/services/api';
+import * as pollService from '../src/services/pollService';
 import type { Poll, PaginatedResponse } from '../src/types/poll';
 
-jest.mock('../src/services/api');
+jest.mock('../src/services/pollService');
 
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -95,7 +95,9 @@ const renderHomePage = () => {
 describe('HomePage', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (apiService.getPolls as jest.Mock).mockResolvedValue(mockPaginatedResponse);
+    (pollService.getPolls as jest.Mock).mockResolvedValue(
+      mockPaginatedResponse
+    );
   });
 
   describe('Renderização inicial', () => {
@@ -133,7 +135,7 @@ describe('HomePage', () => {
       });
 
       expect(screen.getByText('Próximo destino da viagem')).toBeInTheDocument();
-      expect(apiService.getPolls).toHaveBeenCalledWith(1, 10);
+      expect(pollService.getPolls).toHaveBeenCalledWith(1, 10);
     });
   });
 
@@ -243,12 +245,12 @@ describe('HomePage', () => {
       const searchInput = screen.getByPlaceholderText('Buscar votações...');
       fireEvent.change(searchInput, { target: { value: 'viagem' } });
 
-      expect(apiService.getPolls).toHaveBeenCalledTimes(1);
+      expect(pollService.getPolls).toHaveBeenCalledTimes(1);
 
       jest.advanceTimersByTime(500);
 
       await waitFor(() => {
-        expect(apiService.getPolls).toHaveBeenCalledTimes(2);
+        expect(pollService.getPolls).toHaveBeenCalledTimes(2);
       });
 
       jest.useRealTimers();
@@ -271,14 +273,14 @@ describe('HomePage', () => {
       });
 
       await waitFor(() => {
-        expect(apiService.getPolls).toHaveBeenCalledTimes(2);
+        expect(pollService.getPolls).toHaveBeenCalledTimes(2);
       });
     });
   });
 
   describe('Estado vazio', () => {
     it('deve exibir mensagem quando não há votações', async () => {
-      (apiService.getPolls as jest.Mock).mockResolvedValue({
+      (pollService.getPolls as jest.Mock).mockResolvedValue({
         items: [],
         meta: {
           itemCount: 0,
@@ -311,7 +313,7 @@ describe('HomePage', () => {
         ).toBeInTheDocument();
       });
 
-      (apiService.getPolls as jest.Mock).mockResolvedValue({
+      (pollService.getPolls as jest.Mock).mockResolvedValue({
         items: [],
         meta: {
           itemCount: 0,
@@ -339,7 +341,7 @@ describe('HomePage', () => {
 
   describe('Tratamento de erros', () => {
     it('deve exibir mensagem de erro quando a API falhar', async () => {
-      (apiService.getPolls as jest.Mock).mockRejectedValue(
+      (pollService.getPolls as jest.Mock).mockRejectedValue(
         new Error('API Error')
       );
 
@@ -355,7 +357,7 @@ describe('HomePage', () => {
     });
 
     it('deve tentar recarregar ao clicar em "Tentar Novamente"', async () => {
-      (apiService.getPolls as jest.Mock).mockRejectedValueOnce(
+      (pollService.getPolls as jest.Mock).mockRejectedValueOnce(
         new Error('API Error')
       );
 
@@ -367,7 +369,7 @@ describe('HomePage', () => {
         ).toBeInTheDocument();
       });
 
-      (apiService.getPolls as jest.Mock).mockResolvedValue(
+      (pollService.getPolls as jest.Mock).mockResolvedValue(
         mockPaginatedResponse
       );
 
@@ -383,7 +385,7 @@ describe('HomePage', () => {
 
   describe('Paginação', () => {
     it('deve exibir paginação quando há múltiplas páginas', async () => {
-      (apiService.getPolls as jest.Mock).mockResolvedValue({
+      (pollService.getPolls as jest.Mock).mockResolvedValue({
         ...mockPaginatedResponse,
         meta: {
           ...mockPaginatedResponse.meta,
@@ -415,7 +417,7 @@ describe('HomePage', () => {
     });
 
     it('deve desabilitar botão Anterior na primeira página', async () => {
-      (apiService.getPolls as jest.Mock).mockResolvedValue({
+      (pollService.getPolls as jest.Mock).mockResolvedValue({
         ...mockPaginatedResponse,
         meta: {
           ...mockPaginatedResponse.meta,
@@ -434,7 +436,7 @@ describe('HomePage', () => {
     });
 
     it('deve navegar para próxima página ao clicar em Próxima', async () => {
-      (apiService.getPolls as jest.Mock).mockResolvedValue({
+      (pollService.getPolls as jest.Mock).mockResolvedValue({
         ...mockPaginatedResponse,
         meta: {
           ...mockPaginatedResponse.meta,
@@ -451,7 +453,7 @@ describe('HomePage', () => {
       fireEvent.click(screen.getByText('Próxima'));
 
       await waitFor(() => {
-        expect(apiService.getPolls).toHaveBeenCalledWith(2, 10);
+        expect(pollService.getPolls).toHaveBeenCalledWith(2, 10);
       });
     });
   });

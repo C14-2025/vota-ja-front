@@ -2,10 +2,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'react-toastify';
 import { useAuth } from '../../../contexts';
 import { Input, Button } from '../../../common';
 import { registerSchema } from '../../../utils/validation';
 import type { RegisterFormData } from '../../../utils/validation';
+import {
+  login as loginUser,
+  register as registerUser,
+} from '../../../services/authService';
+import { parseApiError } from '../../../types/error';
 import styles from '../AuthPage.module.css';
 
 export const RegisterPage: React.FC = () => {
@@ -23,16 +29,29 @@ export const RegisterPage: React.FC = () => {
 
   const onSubmit = async (data: RegisterFormData) => {
     setLoading(true);
-    console.log('Register:', {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    });
 
-    setTimeout(() => {
-      login();
+    try {
+      await registerUser({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+
+      toast.success('Cadastro realizado com sucesso!');
+
+      const loginResponse = await loginUser({
+        email: data.email,
+        password: data.password,
+      });
+
+      login(loginResponse.accessToken);
       navigate('/home');
-    }, 1000);
+    } catch (error) {
+      console.error('Register error:', error);
+      toast.error(parseApiError(error));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

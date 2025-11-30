@@ -3,10 +3,10 @@ import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContext } from '../src/contexts/AuthContext';
 import { CreatePollPage } from '../src/pages/CreatePoll/CreatePollPage';
-import * as apiService from '../src/services/api';
+import * as pollService from '../src/services/pollService';
 import { toast } from 'react-toastify';
 
-jest.mock('../src/services/api');
+jest.mock('../src/services/pollService');
 jest.mock('react-toastify');
 
 const mockNavigate = jest.fn();
@@ -163,7 +163,7 @@ describe('CreatePollPage', () => {
   });
 
   it('deve criar votação com 2 opções obrigatórias', async () => {
-    const mockCreatePoll = apiService.createPoll as jest.Mock;
+    const mockCreatePoll = pollService.createPoll as jest.Mock;
     mockCreatePoll.mockResolvedValue({
       id: 'poll-123',
       title: 'Título de teste',
@@ -196,22 +196,19 @@ describe('CreatePollPage', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(mockCreatePoll).toHaveBeenCalledWith(
-        {
-          title: 'Título de teste',
-          description: 'Descrição de teste',
-          type: 'public',
-          options: ['Opção 1', 'Opção 2'],
-        },
-        'mock-token'
-      );
+      expect(mockCreatePoll).toHaveBeenCalledWith({
+        title: 'Título de teste',
+        description: 'Descrição de teste',
+        type: 'public',
+        options: ['Opção 1', 'Opção 2'],
+      });
       expect(toast.success).toHaveBeenCalledWith('Votação criada com sucesso!');
       expect(mockNavigate).toHaveBeenCalledWith('/home');
     });
   });
 
   it('deve criar votação com 4 opções', async () => {
-    const mockCreatePoll = apiService.createPoll as jest.Mock;
+    const mockCreatePoll = pollService.createPoll as jest.Mock;
     mockCreatePoll.mockResolvedValue({
       id: 'poll-456',
       title: 'Título de teste',
@@ -252,22 +249,19 @@ describe('CreatePollPage', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(mockCreatePoll).toHaveBeenCalledWith(
-        {
-          title: 'Título de teste',
-          description: 'Descrição de teste',
-          type: 'private',
-          options: ['Opção 1', 'Opção 2', 'Opção 3', 'Opção 4'],
-        },
-        'mock-token'
-      );
+      expect(mockCreatePoll).toHaveBeenCalledWith({
+        title: 'Título de teste',
+        description: 'Descrição de teste',
+        type: 'private',
+        options: ['Opção 1', 'Opção 2', 'Opção 3', 'Opção 4'],
+      });
       expect(toast.success).toHaveBeenCalledWith('Votação criada com sucesso!');
       expect(mockNavigate).toHaveBeenCalledWith('/home');
     });
   });
 
   it('deve ignorar opções vazias ao criar votação', async () => {
-    const mockCreatePoll = apiService.createPoll as jest.Mock;
+    const mockCreatePoll = pollService.createPoll as jest.Mock;
     mockCreatePoll.mockResolvedValue({
       id: 'poll-789',
       title: 'Título de teste',
@@ -303,20 +297,17 @@ describe('CreatePollPage', () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(mockCreatePoll).toHaveBeenCalledWith(
-        {
-          title: 'Título de teste',
-          description: 'Descrição de teste',
-          type: 'public',
-          options: ['Opção 1', 'Opção 2', 'Opção 3'],
-        },
-        'mock-token'
-      );
+      expect(mockCreatePoll).toHaveBeenCalledWith({
+        title: 'Título de teste',
+        description: 'Descrição de teste',
+        type: 'public',
+        options: ['Opção 1', 'Opção 2', 'Opção 3'],
+      });
     });
   });
 
   it('deve mostrar estado de carregamento durante a criação', async () => {
-    const mockCreatePoll = apiService.createPoll as jest.Mock;
+    const mockCreatePoll = pollService.createPoll as jest.Mock;
     mockCreatePoll.mockImplementation(
       () => new Promise((resolve) => setTimeout(resolve, 100))
     );
@@ -344,7 +335,7 @@ describe('CreatePollPage', () => {
   });
 
   it('deve mostrar erro quando a criação falha', async () => {
-    const mockCreatePoll = apiService.createPoll as jest.Mock;
+    const mockCreatePoll = pollService.createPoll as jest.Mock;
     mockCreatePoll.mockRejectedValue(new Error('Erro ao criar votação'));
 
     renderCreatePollPage();

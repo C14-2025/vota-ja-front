@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/AuthContext';
-import * as apiService from '../../services/api';
+import { createPoll } from '../../services/pollService';
 import { Button } from '../../common/Button';
 import { Input } from '../../common/Input';
 import { Text } from '../../common/Text';
@@ -73,15 +73,12 @@ export function CreatePollPage() {
         data.option4,
       ].filter((opt): opt is string => !!opt && opt.trim().length > 0);
 
-      await apiService.createPoll(
-        {
-          title: data.title,
-          description: data.description,
-          type: data.type,
-          options,
-        },
-        token
-      );
+      await createPoll({
+        title: data.title,
+        description: data.description,
+        type: data.type,
+        options,
+      });
 
       toast.success('Votação criada com sucesso!');
       navigate('/home');
