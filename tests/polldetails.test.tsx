@@ -9,6 +9,7 @@ import type { Poll } from '../src/types/poll';
 
 jest.mock('../src/services/pollService');
 jest.mock('../src/services/voteService');
+jest.mock('../src/services/socketService');
 
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
