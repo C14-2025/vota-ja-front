@@ -99,6 +99,26 @@ describe('RegisterPage', () => {
   });
 
   it('should submit form with valid data', async () => {
+    const mockFetch = global.fetch as jest.Mock;
+    mockFetch
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            user: { id: '1', email: 'john@example.com', name: 'John Doe' },
+          }),
+          { status: 201 }
+        )
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            accessToken: 'mock-token',
+            user: { id: '1', email: 'john@example.com', name: 'John Doe' },
+          }),
+          { status: 200 }
+        )
+      );
+
     const user = userEvent.setup();
     render(<MockRegisterPage />);
 
@@ -115,7 +135,17 @@ describe('RegisterPage', () => {
     await user.click(submitButton);
 
     await waitFor(() => {
-      expect(submitButton.getAttribute('aria-busy')).toBe('true');
+      expect(mockFetch).toHaveBeenCalledWith(
+        'http://localhost:5000/v1/users',
+        expect.objectContaining({
+          method: 'POST',
+          body: JSON.stringify({
+            name: 'John Doe',
+            email: 'john@example.com',
+            password: 'password123',
+          }),
+        })
+      );
     });
   });
 });

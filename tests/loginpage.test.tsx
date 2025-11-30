@@ -65,6 +65,17 @@ describe('LoginPage', () => {
   });
 
   it('should submit form with valid credentials', async () => {
+    const mockFetch = global.fetch as jest.Mock;
+    mockFetch.mockResolvedValueOnce(
+      new Response(
+        JSON.stringify({
+          accessToken: 'mock-token',
+          user: { id: '1', email: 'test@example.com', name: 'Test User' },
+        }),
+        { status: 200 }
+      )
+    );
+
     const user = userEvent.setup();
     render(<MockLoginPage />);
 
@@ -77,7 +88,16 @@ describe('LoginPage', () => {
     await user.click(submitButton);
 
     await waitFor(() => {
-      expect(submitButton.getAttribute('aria-busy')).toBe('true');
+      expect(mockFetch).toHaveBeenCalledWith(
+        'http://localhost:5000/v1/auth/login',
+        expect.objectContaining({
+          method: 'POST',
+          body: JSON.stringify({
+            email: 'test@example.com',
+            password: 'password123',
+          }),
+        })
+      );
     });
   });
 });
