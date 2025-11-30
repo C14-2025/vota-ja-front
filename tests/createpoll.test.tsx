@@ -47,13 +47,15 @@ describe('CreatePollPage', () => {
     expect(screen.getByLabelText('Descrição')).toBeInTheDocument();
     expect(screen.getByText('Pública')).toBeInTheDocument();
     expect(screen.getByText('Privada')).toBeInTheDocument();
-    expect(screen.getByLabelText('Opção 1')).toBeInTheDocument();
-    expect(screen.getByLabelText('Opção 2')).toBeInTheDocument();
-    expect(screen.getByLabelText('Opção 3 (opcional)')).toBeInTheDocument();
-    expect(screen.getByLabelText('Opção 4 (opcional)')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Opção 1')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Opção 2')).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: /criar votação/i })
+      screen.getByPlaceholderText('Opção 3 (opcional)')
     ).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText('Opção 4 (opcional)')
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /enviar/i })).toBeInTheDocument();
   });
 
   it('deve renderizar o botão Voltar', () => {
@@ -98,7 +100,7 @@ describe('CreatePollPage', () => {
   it('deve mostrar erro quando título está vazio', async () => {
     renderCreatePollPage();
 
-    const submitButton = screen.getByRole('button', { name: /criar votação/i });
+    const submitButton = screen.getByRole('button', { name: /enviar/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -112,7 +114,7 @@ describe('CreatePollPage', () => {
     const titleInput = screen.getByLabelText('Título');
     fireEvent.change(titleInput, { target: { value: 'Título de teste' } });
 
-    const submitButton = screen.getByRole('button', { name: /criar votação/i });
+    const submitButton = screen.getByRole('button', { name: /enviar/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -131,7 +133,7 @@ describe('CreatePollPage', () => {
       target: { value: 'Descrição de teste' },
     });
 
-    const submitButton = screen.getByRole('button', { name: /criar votação/i });
+    const submitButton = screen.getByRole('button', { name: /enviar/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -144,7 +146,7 @@ describe('CreatePollPage', () => {
 
     const titleInput = screen.getByLabelText('Título');
     const descriptionInput = screen.getByLabelText('Descrição');
-    const option1Input = screen.getByLabelText('Opção 1');
+    const option1Input = screen.getByPlaceholderText('Opção 1');
 
     fireEvent.change(titleInput, { target: { value: 'Título de teste' } });
     fireEvent.change(descriptionInput, {
@@ -152,7 +154,7 @@ describe('CreatePollPage', () => {
     });
     fireEvent.change(option1Input, { target: { value: 'Opção 1' } });
 
-    const submitButton = screen.getByRole('button', { name: /criar votação/i });
+    const submitButton = screen.getByRole('button', { name: /enviar/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -180,8 +182,8 @@ describe('CreatePollPage', () => {
 
     const titleInput = screen.getByLabelText('Título');
     const descriptionInput = screen.getByLabelText('Descrição');
-    const option1Input = screen.getByLabelText('Opção 1');
-    const option2Input = screen.getByLabelText('Opção 2');
+    const option1Input = screen.getByPlaceholderText('Opção 1');
+    const option2Input = screen.getByPlaceholderText('Opção 2');
 
     fireEvent.change(titleInput, { target: { value: 'Título de teste' } });
     fireEvent.change(descriptionInput, {
@@ -190,7 +192,7 @@ describe('CreatePollPage', () => {
     fireEvent.change(option1Input, { target: { value: 'Opção 1' } });
     fireEvent.change(option2Input, { target: { value: 'Opção 2' } });
 
-    const submitButton = screen.getByRole('button', { name: /criar votação/i });
+    const submitButton = screen.getByRole('button', { name: /enviar/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -230,10 +232,10 @@ describe('CreatePollPage', () => {
 
     const titleInput = screen.getByLabelText('Título');
     const descriptionInput = screen.getByLabelText('Descrição');
-    const option1Input = screen.getByLabelText('Opção 1');
-    const option2Input = screen.getByLabelText('Opção 2');
-    const option3Input = screen.getByLabelText('Opção 3 (opcional)');
-    const option4Input = screen.getByLabelText('Opção 4 (opcional)');
+    const option1Input = screen.getByPlaceholderText('Opção 1');
+    const option2Input = screen.getByPlaceholderText('Opção 2');
+    const option3Input = screen.getByPlaceholderText('Opção 3 (opcional)');
+    const option4Input = screen.getByPlaceholderText('Opção 4 (opcional)');
     const privateRadio = screen.getByDisplayValue('private');
 
     fireEvent.change(titleInput, { target: { value: 'Título de teste' } });
@@ -246,7 +248,7 @@ describe('CreatePollPage', () => {
     fireEvent.change(option3Input, { target: { value: 'Opção 3' } });
     fireEvent.change(option4Input, { target: { value: 'Opção 4' } });
 
-    const submitButton = screen.getByRole('button', { name: /criar votação/i });
+    const submitButton = screen.getByRole('button', { name: /enviar/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -285,9 +287,9 @@ describe('CreatePollPage', () => {
 
     const titleInput = screen.getByLabelText('Título');
     const descriptionInput = screen.getByLabelText('Descrição');
-    const option1Input = screen.getByLabelText('Opção 1');
-    const option2Input = screen.getByLabelText('Opção 2');
-    const option3Input = screen.getByLabelText('Opção 3 (opcional)');
+    const option1Input = screen.getByPlaceholderText('Opção 1');
+    const option2Input = screen.getByPlaceholderText('Opção 2');
+    const option3Input = screen.getByPlaceholderText('Opção 3 (opcional)');
 
     fireEvent.change(titleInput, { target: { value: 'Título de teste' } });
     fireEvent.change(descriptionInput, {
@@ -297,7 +299,7 @@ describe('CreatePollPage', () => {
     fireEvent.change(option2Input, { target: { value: 'Opção 2' } });
     fireEvent.change(option3Input, { target: { value: 'Opção 3' } });
 
-    const submitButton = screen.getByRole('button', { name: /criar votação/i });
+    const submitButton = screen.getByRole('button', { name: /enviar/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -323,8 +325,8 @@ describe('CreatePollPage', () => {
 
     const titleInput = screen.getByLabelText('Título');
     const descriptionInput = screen.getByLabelText('Descrição');
-    const option1Input = screen.getByLabelText('Opção 1');
-    const option2Input = screen.getByLabelText('Opção 2');
+    const option1Input = screen.getByPlaceholderText('Opção 1');
+    const option2Input = screen.getByPlaceholderText('Opção 2');
 
     fireEvent.change(titleInput, { target: { value: 'Título de teste' } });
     fireEvent.change(descriptionInput, {
@@ -333,7 +335,7 @@ describe('CreatePollPage', () => {
     fireEvent.change(option1Input, { target: { value: 'Opção 1' } });
     fireEvent.change(option2Input, { target: { value: 'Opção 2' } });
 
-    const submitButton = screen.getByRole('button', { name: /criar votação/i });
+    const submitButton = screen.getByRole('button', { name: /enviar/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -349,8 +351,8 @@ describe('CreatePollPage', () => {
 
     const titleInput = screen.getByLabelText('Título');
     const descriptionInput = screen.getByLabelText('Descrição');
-    const option1Input = screen.getByLabelText('Opção 1');
-    const option2Input = screen.getByLabelText('Opção 2');
+    const option1Input = screen.getByPlaceholderText('Opção 1');
+    const option2Input = screen.getByPlaceholderText('Opção 2');
 
     fireEvent.change(titleInput, { target: { value: 'Título de teste' } });
     fireEvent.change(descriptionInput, {
@@ -359,7 +361,7 @@ describe('CreatePollPage', () => {
     fireEvent.change(option1Input, { target: { value: 'Opção 1' } });
     fireEvent.change(option2Input, { target: { value: 'Opção 2' } });
 
-    const submitButton = screen.getByRole('button', { name: /criar votação/i });
+    const submitButton = screen.getByRole('button', { name: /enviar/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -374,8 +376,8 @@ describe('CreatePollPage', () => {
 
     const titleInput = screen.getByLabelText('Título');
     const descriptionInput = screen.getByLabelText('Descrição');
-    const option1Input = screen.getByLabelText('Opção 1');
-    const option2Input = screen.getByLabelText('Opção 2');
+    const option1Input = screen.getByPlaceholderText('Opção 1');
+    const option2Input = screen.getByPlaceholderText('Opção 2');
 
     fireEvent.change(titleInput, { target: { value: 'Título de teste' } });
     fireEvent.change(descriptionInput, {
@@ -384,7 +386,7 @@ describe('CreatePollPage', () => {
     fireEvent.change(option1Input, { target: { value: 'Opção 1' } });
     fireEvent.change(option2Input, { target: { value: 'Opção 2' } });
 
-    const submitButton = screen.getByRole('button', { name: /criar votação/i });
+    const submitButton = screen.getByRole('button', { name: /enviar/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
