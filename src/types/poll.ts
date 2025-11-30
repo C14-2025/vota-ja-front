@@ -33,3 +33,25 @@ export interface PaginatedResponse<T> {
     currentPage: number;
   };
 }
+
+export interface CreatePollRequest {
+  title: string;
+  description: string;
+  type: 'public' | 'private';
+  options: string[];
+}
+
+export interface CreatePollResponse {
+  id: string;
+  title: string;
+  description: string;
+  type: 'public' | 'private';
+  options: Array<{
+    id: string;
+    text: string;
+    createdAt: string;
+  }>;
+  creator: User;
+  createdAt: string;
+  updatedAt: string;
+}
