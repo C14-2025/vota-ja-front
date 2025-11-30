@@ -97,132 +97,119 @@ export function CreatePollPage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <Text variant="title" as="h1">
-          Criar Votação
-        </Text>
-        <Button variant="secondary" onClick={() => navigate('/')}>
-          Voltar
-        </Button>
-      </div>
-
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-        <div className={styles.field}>
-          <label htmlFor="title" className={styles.label}>
-            Título
-          </label>
-          <Input
-            id="title"
-            {...register('title')}
-            placeholder="Digite o título da votação"
-            error={errors.title?.message}
-          />
+        <div className={styles.header}>
+          <h1>Criar Votação</h1>
+          <Button
+            variant="secondary"
+            onClick={() => navigate('/')}
+            type="button"
+          >
+            Voltar
+          </Button>
         </div>
-
-        <div className={styles.field}>
-          <label className={styles.label}>Tipo</label>
-          <div className={styles.radioGroup}>
-            <label className={styles.radioLabel}>
-              <input
-                type="radio"
-                value="public"
-                {...register('type')}
-                className={styles.radio}
+        <div className={styles.formContent}>
+          <div className={styles.topSection}>
+            <div className={styles.field}>
+              <label htmlFor="title" className={styles.label}>
+                Título
+              </label>
+              <Input
+                id="title"
+                {...register('title')}
+                placeholder="Digite o título da votação"
+                error={errors.title?.message}
               />
-              <span>Pública</span>
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label}>Tipo</label>
+              <div className={styles.radioGroup}>
+                <label className={styles.radioLabel}>
+                  <input
+                    type="radio"
+                    value="public"
+                    {...register('type')}
+                    className={styles.radio}
+                  />
+                  <span>Pública</span>
+                </label>
+                <label className={styles.radioLabel}>
+                  <input
+                    type="radio"
+                    value="private"
+                    {...register('type')}
+                    className={styles.radio}
+                  />
+                  <span>Privada</span>
+                </label>
+              </div>
+              {errors.type && (
+                <Text variant="small" className={styles.error}>
+                  {errors.type.message}
+                </Text>
+              )}
+            </div>
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="description" className={styles.label}>
+              Descrição
             </label>
-            <label className={styles.radioLabel}>
-              <input
-                type="radio"
-                value="private"
-                {...register('type')}
-                className={styles.radio}
+            <textarea
+              id="description"
+              {...register('description')}
+              placeholder="Descreva a votação"
+              className={styles.textarea}
+              rows={4}
+            />
+            {errors.description && (
+              <Text variant="small" className={styles.error}>
+                {errors.description.message}
+              </Text>
+            )}
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>Opções</label>
+            <div className={styles.optionsGrid}>
+              <Input
+                id="option1"
+                {...register('option1')}
+                placeholder="Opção 1"
+                error={errors.option1?.message}
               />
-              <span>Privada</span>
-            </label>
-          </div>
-          {errors.type && (
-            <Text variant="small" className={styles.error}>
-              {errors.type.message}
-            </Text>
-          )}
-        </div>
-
-        <div className={styles.field}>
-          <label htmlFor="description" className={styles.label}>
-            Descrição
-          </label>
-          <textarea
-            id="description"
-            {...register('description')}
-            placeholder="Descreva a votação"
-            className={styles.textarea}
-            rows={4}
-          />
-          {errors.description && (
-            <Text variant="small" className={styles.error}>
-              {errors.description.message}
-            </Text>
-          )}
-        </div>
-
-        <div className={styles.optionsSection}>
-          <Text variant="subtitle" as="h3" className={styles.optionsTitle}>
-            Opções
-          </Text>
-
-          <div className={styles.field}>
-            <label htmlFor="option1" className={styles.label}>
-              Opção 1
-            </label>
-            <Input
-              id="option1"
-              {...register('option1')}
-              placeholder="Digite a primeira opção"
-              error={errors.option1?.message}
-            />
-          </div>
-
-          <div className={styles.field}>
-            <label htmlFor="option2" className={styles.label}>
-              Opção 2
-            </label>
-            <Input
-              id="option2"
-              {...register('option2')}
-              placeholder="Digite a segunda opção"
-              error={errors.option2?.message}
-            />
-          </div>
-
-          <div className={styles.field}>
-            <label htmlFor="option3" className={styles.label}>
-              Opção 3 (opcional)
-            </label>
-            <Input
-              id="option3"
-              {...register('option3')}
-              placeholder="Digite a terceira opção"
-              error={errors.option3?.message}
-            />
-          </div>
-
-          <div className={styles.field}>
-            <label htmlFor="option4" className={styles.label}>
-              Opção 4 (opcional)
-            </label>
-            <Input
-              id="option4"
-              {...register('option4')}
-              placeholder="Digite a quarta opção"
-              error={errors.option4?.message}
-            />
+              <Input
+                id="option2"
+                {...register('option2')}
+                placeholder="Opção 2"
+                error={errors.option2?.message}
+              />
+              <Input
+                id="option3"
+                {...register('option3')}
+                placeholder="Opção 3 (opcional)"
+                error={errors.option3?.message}
+              />
+              <Input
+                id="option4"
+                {...register('option4')}
+                placeholder="Opção 4 (opcional)"
+                error={errors.option4?.message}
+              />
+            </div>
           </div>
         </div>
 
         <div className={styles.actions}>
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? 'Criando...' : 'Criar Votação'}
+          <Button
+            type="submit"
+            disabled={isLoading}
+            variant="primary"
+            size="large"
+            fullWidth
+          >
+            {isLoading ? 'Criando...' : 'Enviar'}
           </Button>
         </div>
       </form>
