@@ -33,6 +33,7 @@ export const LoginPage: React.FC = () => {
         password: data.password,
       });
 
+      localStorage.setItem('userId', response.user.id);
       login(response.accessToken);
       toast.success('Login realizado com sucesso!');
       navigate('/home');
