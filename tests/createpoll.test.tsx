@@ -17,6 +17,7 @@ jest.mock('react-router-dom', () => ({
 
 const mockAuthContext = {
   isAuthenticated: true,
+  userId: '1',
   login: jest.fn(),
   logout: jest.fn(),
 };

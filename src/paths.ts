@@ -25,13 +25,14 @@ export const API_ENDPOINTS = {
     LIST: `${API_BASE_URL}/polls`,
     CREATE: `${API_BASE_URL}/polls`,
     BY_ID: (id: string) => `${API_BASE_URL}/polls/${id}`,
+    CLOSE: (id: string) => `${API_BASE_URL}/polls/${id}/close`,
   },
   USERS: {
     LIST: `${API_BASE_URL}/users`,
     BY_ID: (id: string) => `${API_BASE_URL}/users/${id}`,
   },
   VOTES: {
-    CREATE: `${API_BASE_URL}/votes`,
-    DELETE: (id: string) => `${API_BASE_URL}/votes/${id}`,
+    CREATE: (pollId: string) => `${API_BASE_URL}/polls/${pollId}/vote`,
+    DELETE: (pollId: string) => `${API_BASE_URL}/polls/${pollId}/vote`,
   },
 };

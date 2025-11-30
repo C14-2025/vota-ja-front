@@ -92,3 +92,27 @@ export async function createPoll(
 
   return response.json();
 }
+
+export async function closePoll(pollId: string): Promise<Poll | null> {
+  const token = localStorage.getItem('authToken');
+
+  if (!token) {
+    throw new Error('Authentication required to close a poll');
+  }
+
+  const response = await fetch(API_ENDPOINTS.POLLS.CLOSE(pollId), {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw error;
+  }
+
+  const text = await response.text();
+  return text ? JSON.parse(text) : null;
+}

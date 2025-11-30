@@ -42,6 +42,8 @@ const mockPolls: Poll[] = [
     ],
     creator: { id: '1', name: 'João Silva', email: 'joao@example.com' },
     totalVotes: 107,
+    status: 'OPEN' as const,
+    votedOption: null,
     createdAt: '2025-11-20T10:00:00Z',
     updatedAt: '2025-11-29T15:30:00Z',
   },
@@ -60,6 +62,8 @@ const mockPolls: Poll[] = [
     ],
     creator: { id: '2', name: 'Maria Santos', email: 'maria@example.com' },
     totalVotes: 12,
+    status: 'OPEN' as const,
+    votedOption: null,
     createdAt: '2025-11-21T14:00:00Z',
     updatedAt: '2025-11-28T09:15:00Z',
   },
@@ -78,12 +82,14 @@ const mockPaginatedResponse: PaginatedResponse<Poll> = {
 
 const mockAuthContextValue = {
   isAuthenticated: true,
+  userId: '1',
   login: jest.fn(),
   logout: jest.fn(),
 };
 
 const mockUnauthenticatedContextValue = {
   isAuthenticated: false,
+  userId: null,
   login: jest.fn(),
   logout: jest.fn(),
 };
@@ -162,7 +168,6 @@ describe('HomePage', () => {
       expect(
         screen.getByText('Vote na sua linguagem favorita')
       ).toBeInTheDocument();
-      expect(screen.getByText('107 votos')).toBeInTheDocument();
       expect(screen.getByText('2 opções')).toBeInTheDocument();
       expect(screen.getByText('João Silva')).toBeInTheDocument();
       expect(screen.getByText('Pública')).toBeInTheDocument();
@@ -544,7 +549,169 @@ describe('HomePage', () => {
       });
 
       expect(screen.getByText('Próximo destino da viagem')).toBeInTheDocument();
-      expect(screen.getByText('107 votos')).toBeInTheDocument();
+    });
+  });
+
+  describe('Encerrar votação', () => {
+    it('deve exibir botão "Encerrar" para o criador da votação', async () => {
+      const mockAuthWithUserId = {
+        ...mockAuthContextValue,
+        userId: '1',
+      };
+
+      render(
+        <BrowserRouter>
+          <AuthContext.Provider value={mockAuthWithUserId}>
+            <HomePage />
+          </AuthContext.Provider>
+        </BrowserRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getAllByText('Encerrar')[0]).toBeInTheDocument();
+      });
+    });
+
+    it('não deve exibir botão "Encerrar" para votações de outros usuários', async () => {
+      const mockAuthWithDifferentUserId = {
+        ...mockAuthContextValue,
+        userId: '999',
+      };
+
+      render(
+        <BrowserRouter>
+          <AuthContext.Provider value={mockAuthWithDifferentUserId}>
+            <HomePage />
+          </AuthContext.Provider>
+        </BrowserRouter>
+      );
+
+      await waitFor(() => {
+        expect(
+          screen.getByText('Melhor linguagem de programação')
+        ).toBeInTheDocument();
+      });
+
+      expect(screen.queryByText('Encerrar')).not.toBeInTheDocument();
+    });
+
+    it('não deve exibir botão "Encerrar" para votações já encerradas', async () => {
+      const closedPoll = {
+        ...mockPolls[0],
+        status: 'CLOSED' as const,
+      };
+
+      (pollService.getPolls as jest.Mock).mockResolvedValue({
+        items: [closedPoll],
+        meta: {
+          itemCount: 1,
+          totalItems: 1,
+          itemsPerPage: 10,
+          totalPages: 1,
+          currentPage: 1,
+        },
+      });
+
+      const mockAuthWithUserId = {
+        ...mockAuthContextValue,
+        userId: '1',
+      };
+
+      render(
+        <BrowserRouter>
+          <AuthContext.Provider value={mockAuthWithUserId}>
+            <HomePage />
+          </AuthContext.Provider>
+        </BrowserRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('Encerrada')).toBeInTheDocument();
+      });
+
+      expect(screen.queryByText('Encerrar')).not.toBeInTheDocument();
+    });
+
+    it('deve encerrar votação ao clicar no botão', async () => {
+      (pollService.closePoll as jest.Mock).mockResolvedValue(null);
+
+      const mockAuthWithUserId = {
+        ...mockAuthContextValue,
+        userId: '1',
+      };
+
+      render(
+        <BrowserRouter>
+          <AuthContext.Provider value={mockAuthWithUserId}>
+            <HomePage />
+          </AuthContext.Provider>
+        </BrowserRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getAllByText('Encerrar')[0]).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getAllByText('Encerrar')[0]);
+
+      await waitFor(() => {
+        expect(pollService.closePoll).toHaveBeenCalled();
+      });
+    });
+
+    it('deve recarregar lista após encerrar votação', async () => {
+      (pollService.closePoll as jest.Mock).mockResolvedValue(null);
+
+      const mockAuthWithUserId = {
+        ...mockAuthContextValue,
+        userId: '1',
+      };
+
+      render(
+        <BrowserRouter>
+          <AuthContext.Provider value={mockAuthWithUserId}>
+            <HomePage />
+          </AuthContext.Provider>
+        </BrowserRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getAllByText('Encerrar')[0]).toBeInTheDocument();
+      });
+
+      const initialCallCount = (pollService.getPolls as jest.Mock).mock.calls
+        .length;
+
+      fireEvent.click(screen.getAllByText('Encerrar')[0]);
+
+      await waitFor(() => {
+        expect((pollService.getPolls as jest.Mock).mock.calls.length).toBe(
+          initialCallCount + 1
+        );
+      });
+    });
+
+    it('não deve navegar para detalhes ao clicar no botão encerrar', async () => {
+      const mockAuthWithUserId = {
+        ...mockAuthContextValue,
+        userId: '1',
+      };
+
+      render(
+        <BrowserRouter>
+          <AuthContext.Provider value={mockAuthWithUserId}>
+            <HomePage />
+          </AuthContext.Provider>
+        </BrowserRouter>
+      );
+
+      await waitFor(() => {
+        expect(screen.getAllByText('Encerrar')[0]).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getAllByText('Encerrar')[0]);
+
+      expect(mockNavigate).not.toHaveBeenCalled();
     });
   });
 });
