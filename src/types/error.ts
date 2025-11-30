@@ -19,22 +19,38 @@ export const ApiErrorType = {
 } as const;
 
 const ERROR_MESSAGES: Record<string, string> = {
+  // Auth errors
   'Credentials are not valid.': 'Email ou senha incorretos.',
   Unauthorized: 'Você precisa estar autenticado.',
   'User already exists with this email': 'Este email já está cadastrado.',
   'User not found': 'Usuário não encontrado.',
+
+  // Poll errors
   'Poll not found': 'Votação não encontrada.',
   'Poll option not found': 'Opção de votação não encontrada.',
   'Unauthorized to access this private poll':
     'Você não tem permissão para acessar esta votação privada.',
+  'Poll is closed': 'Esta votação já foi encerrada.',
+  'Only the creator can close this poll':
+    'Apenas o criador pode encerrar esta votação.',
+
+  // Vote errors
   'User has already voted in this poll': 'Você já votou nesta votação.',
   'Vote not found': 'Voto não encontrado.',
+
+  // Validation errors
   'email must be an email': 'Digite um email válido.',
   'password must be longer than or equal to 6 characters':
     'A senha deve ter no mínimo 6 caracteres.',
   'name should not be empty': 'O nome é obrigatório.',
   'email should not be empty': 'O email é obrigatório.',
   'password should not be empty': 'A senha é obrigatória.',
+  'title should not be empty': 'O título é obrigatório.',
+  'description should not be empty': 'A descrição é obrigatória.',
+  'type should not be empty': 'O tipo é obrigatório.',
+  'options should not be empty': 'As opções são obrigatórias.',
+  'options must contain at least 2 items': 'Deve haver no mínimo 2 opções.',
+  'each value in options must be a string': 'Cada opção deve ser um texto.',
 };
 
 function isApiErrorResponse(error: unknown): error is ApiErrorResponse {

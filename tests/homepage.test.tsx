@@ -82,10 +82,20 @@ const mockAuthContextValue = {
   logout: jest.fn(),
 };
 
-const renderHomePage = () => {
+const mockUnauthenticatedContextValue = {
+  isAuthenticated: false,
+  login: jest.fn(),
+  logout: jest.fn(),
+};
+
+const renderHomePage = (authenticated = true) => {
+  const contextValue = authenticated
+    ? mockAuthContextValue
+    : mockUnauthenticatedContextValue;
+
   return render(
     <BrowserRouter>
-      <AuthContext.Provider value={mockAuthContextValue}>
+      <AuthContext.Provider value={contextValue}>
         <HomePage />
       </AuthContext.Provider>
     </BrowserRouter>
@@ -135,7 +145,7 @@ describe('HomePage', () => {
       });
 
       expect(screen.getByText('Próximo destino da viagem')).toBeInTheDocument();
-      expect(pollService.getPolls).toHaveBeenCalledWith(1, 10);
+      expect(pollService.getPolls).toHaveBeenCalledWith(1, 10, '');
     });
   });
 
@@ -247,7 +257,9 @@ describe('HomePage', () => {
 
       expect(pollService.getPolls).toHaveBeenCalledTimes(1);
 
-      jest.advanceTimersByTime(500);
+      act(() => {
+        jest.advanceTimersByTime(500);
+      });
 
       await waitFor(() => {
         expect(pollService.getPolls).toHaveBeenCalledTimes(2);
@@ -340,7 +352,7 @@ describe('HomePage', () => {
   });
 
   describe('Tratamento de erros', () => {
-    it('deve exibir mensagem de erro quando a API falhar', async () => {
+    it('deve exibir toast de erro quando a API falhar', async () => {
       (pollService.getPolls as jest.Mock).mockRejectedValue(
         new Error('API Error')
       );
@@ -349,14 +361,16 @@ describe('HomePage', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText('Erro ao carregar votações. Tente novamente.')
+          screen.getByText('Nenhuma votação encontrada')
         ).toBeInTheDocument();
       });
 
-      expect(screen.getByText('Tentar Novamente')).toBeInTheDocument();
+      expect(
+        screen.getByText('Crie sua primeira votação para começar')
+      ).toBeInTheDocument();
     });
 
-    it('deve tentar recarregar ao clicar em "Tentar Novamente"', async () => {
+    it('deve limpar lista de polls quando API falhar', async () => {
       (pollService.getPolls as jest.Mock).mockRejectedValueOnce(
         new Error('API Error')
       );
@@ -365,21 +379,13 @@ describe('HomePage', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText('Erro ao carregar votações. Tente novamente.')
+          screen.getByText('Nenhuma votação encontrada')
         ).toBeInTheDocument();
       });
 
-      (pollService.getPolls as jest.Mock).mockResolvedValue(
-        mockPaginatedResponse
-      );
-
-      fireEvent.click(screen.getByText('Tentar Novamente'));
-
-      await waitFor(() => {
-        expect(
-          screen.getByText('Melhor linguagem de programação')
-        ).toBeInTheDocument();
-      });
+      expect(
+        screen.queryByText('Melhor linguagem de programação')
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -453,8 +459,92 @@ describe('HomePage', () => {
       fireEvent.click(screen.getByText('Próxima'));
 
       await waitFor(() => {
-        expect(pollService.getPolls).toHaveBeenCalledWith(2, 10);
+        expect(pollService.getPolls).toHaveBeenCalledWith(2, 10, '');
       });
+    });
+  });
+
+  describe('Modo Público (Não Autenticado)', () => {
+    it('deve renderizar botões Entrar e Cadastrar quando não logado', async () => {
+      renderHomePage(false);
+
+      await waitFor(() => {
+        expect(screen.getByText('Entrar')).toBeInTheDocument();
+      });
+
+      expect(screen.getByText('Cadastrar')).toBeInTheDocument();
+      expect(screen.queryByText('Logout')).not.toBeInTheDocument();
+    });
+
+    it('não deve mostrar botão Nova Votação quando não logado', async () => {
+      renderHomePage(false);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText('Melhor linguagem de programação')
+        ).toBeInTheDocument();
+      });
+
+      expect(screen.queryByText('Nova Votação')).not.toBeInTheDocument();
+    });
+
+    it('deve mostrar botão Fazer Login no estado vazio quando não logado', async () => {
+      (pollService.getPolls as jest.Mock).mockResolvedValue({
+        items: [],
+        meta: {
+          itemCount: 0,
+          totalItems: 0,
+          itemsPerPage: 10,
+          totalPages: 0,
+          currentPage: 1,
+        },
+      });
+
+      renderHomePage(false);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText('Faça login para criar votações')
+        ).toBeInTheDocument();
+      });
+
+      expect(screen.getByText('Fazer Login')).toBeInTheDocument();
+      expect(screen.queryByText('Criar Votação')).not.toBeInTheDocument();
+    });
+
+    it('deve navegar para login ao clicar em Entrar', async () => {
+      renderHomePage(false);
+
+      await waitFor(() => {
+        expect(screen.getByText('Entrar')).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByText('Entrar'));
+      expect(mockNavigate).toHaveBeenCalledWith('/login');
+    });
+
+    it('deve navegar para registro ao clicar em Cadastrar', async () => {
+      renderHomePage(false);
+
+      await waitFor(() => {
+        expect(screen.getByText('Cadastrar')).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByText('Cadastrar'));
+      expect(mockNavigate).toHaveBeenCalledWith('/register');
+    });
+
+    it('deve permitir visualizar polls sem estar logado', async () => {
+      renderHomePage(false);
+
+      await waitFor(() => {
+        expect(
+          screen.getByText('Melhor linguagem de programação')
+        ).toBeInTheDocument();
+      });
+
+      expect(screen.getByText('Próximo destino da viagem')).toBeInTheDocument();
+      expect(screen.getByText('107 votos')).toBeInTheDocument();
     });
   });
 });

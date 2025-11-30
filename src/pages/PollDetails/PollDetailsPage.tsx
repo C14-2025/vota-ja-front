@@ -1,41 +1,26 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '../../common/Button';
+import { ArrowLeft } from 'phosphor-react';
 
 export const PollDetailsPage: React.FC = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        gap: '20px',
-      }}
-    >
-      <h1>Detalhes da Votação</h1>
-      <p>
-        ID: <strong>{id}</strong>
-      </p>
-      <button
+    <div style={{ padding: '2rem' }}>
+      <Button
+        variant="secondary"
+        size="small"
         onClick={() => navigate('/home')}
-        style={{
-          padding: '10px 20px',
-          fontSize: '16px',
-          cursor: 'pointer',
-          borderRadius: '5px',
-          border: 'none',
-          background: '#6366f1',
-          color: 'white',
-        }}
       >
-        Voltar para Home
-      </button>
+        <ArrowLeft size={16} weight="bold" />
+        Voltar
+      </Button>
+
+      <div style={{ marginTop: '2rem' }}>
+        <h1>Detalhes da Votação</h1>
+        <p>Esta página será implementada em breve.</p>
+      </div>
     </div>
   );
 };
-
-export default PollDetailsPage;
