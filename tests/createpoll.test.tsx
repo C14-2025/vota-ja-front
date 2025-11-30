@@ -71,7 +71,7 @@ describe('CreatePollPage', () => {
     const backButton = screen.getByText('Voltar');
     fireEvent.click(backButton);
 
-    expect(mockNavigate).toHaveBeenCalledWith('/');
+    expect(mockNavigate).toHaveBeenCalledWith('/home');
   });
 
   it('deve ter "Pública" selecionado por padrão', () => {
@@ -206,7 +206,7 @@ describe('CreatePollPage', () => {
         'mock-token'
       );
       expect(toast.success).toHaveBeenCalledWith('Votação criada com sucesso!');
-      expect(mockNavigate).toHaveBeenCalledWith('/polls/poll-123');
+      expect(mockNavigate).toHaveBeenCalledWith('/home');
     });
   });
 
@@ -262,7 +262,7 @@ describe('CreatePollPage', () => {
         'mock-token'
       );
       expect(toast.success).toHaveBeenCalledWith('Votação criada com sucesso!');
-      expect(mockNavigate).toHaveBeenCalledWith('/polls/poll-456');
+      expect(mockNavigate).toHaveBeenCalledWith('/home');
     });
   });
 

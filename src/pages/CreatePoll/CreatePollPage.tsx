@@ -73,7 +73,7 @@ export function CreatePollPage() {
         data.option4,
       ].filter((opt): opt is string => !!opt && opt.trim().length > 0);
 
-      const response = await apiService.createPoll(
+      await apiService.createPoll(
         {
           title: data.title,
           description: data.description,
@@ -84,7 +84,7 @@ export function CreatePollPage() {
       );
 
       toast.success('Votação criada com sucesso!');
-      navigate(`/polls/${response.id}`);
+      navigate('/home');
     } catch (error) {
       console.error('Error creating poll:', error);
       toast.error(
@@ -102,7 +102,7 @@ export function CreatePollPage() {
           <h1>Criar Votação</h1>
           <Button
             variant="secondary"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/home')}
             type="button"
           >
             Voltar
