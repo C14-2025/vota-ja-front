@@ -15,10 +15,20 @@ import {
 } from 'phosphor-react';
 import { Button } from '../../common/Button';
 import { useAuth } from '../../contexts/AuthContext';
-import { getPollById, createVote, deleteVote, closePoll } from '../../services';
+import {
+  getPollById,
+  createVote,
+  deleteVote,
+  closePoll,
+  socketService,
+} from '../../services';
 import type { Poll } from '../../types/poll';
 import { parseApiError } from '../../types/error';
 import styles from './PollDetailsPage.module.css';
+
+interface PollUpdateEvent {
+  pollId: string;
+}
 
 export const PollDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -55,6 +65,26 @@ export const PollDetailsPage: React.FC = () => {
   useEffect(() => {
     loadPoll();
   }, [loadPoll]);
+
+  useEffect(() => {
+    if (!id) return;
+
+    socketService.connect();
+    socketService.joinPoll(id);
+
+    socketService.onPollUpdated((data) => {
+      const event = data as PollUpdateEvent;
+      console.log('Poll update received:', event);
+      if (event.pollId === id) {
+        console.log('Reloading poll data...');
+        loadPoll();
+      }
+    });
+
+    return () => {
+      socketService.offPollUpdated();
+    };
+  }, [id, loadPoll]);
 
   const handleVote = async () => {
     if (!selectedOption || !id) return;
