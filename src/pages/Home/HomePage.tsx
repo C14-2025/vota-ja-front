@@ -24,7 +24,7 @@ export const HomePage: React.FC = () => {
     >
       <h1>Home</h1>
       <p>Página inicial</p>
-      <div style={{ display: 'flex', gap: '10px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <button
           onClick={() => navigate('/polls/create')}
           style={{
