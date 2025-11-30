@@ -1,4 +1,9 @@
-import type { Poll, PaginatedResponse } from '../types/poll';
+import type {
+  Poll,
+  PaginatedResponse,
+  CreatePollRequest,
+  CreatePollResponse,
+} from '../types/poll';
 
 const API_BASE_URL = 'http://localhost:5000';
 
@@ -204,4 +209,52 @@ export async function getPollById(id: string, token?: string): Promise<Poll> {
   return response.json();
 }
 
-export default { getPolls, getPollById };
+export async function createPoll(
+  data: CreatePollRequest,
+  _token: string
+): Promise<CreatePollResponse> {
+  // Simula delay de API
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  // Mock: Cria uma votação simulada
+  const newPoll: CreatePollResponse = {
+    id: Math.random().toString(36).substring(7),
+    title: data.title,
+    description: data.description,
+    type: data.type,
+    options: data.options.map((opt, index) => ({
+      id: (index + 1).toString(),
+      text: opt,
+      createdAt: new Date().toISOString(),
+    })),
+    creator: {
+      id: '1',
+      name: 'Usuário Mock',
+      email: 'usuario@example.com',
+    },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  return newPoll;
+
+  /* Código real da API (descomentar quando o backend estiver pronto):
+  const response = await fetch(`${API_BASE_URL}/polls`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Failed to create poll');
+  }
+
+  return response.json();
+  */
+}
+
+export default { getPolls, getPollById, createPoll };
