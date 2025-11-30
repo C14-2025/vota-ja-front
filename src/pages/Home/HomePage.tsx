@@ -31,7 +31,6 @@ export const HomePage: React.FC = () => {
       setPolls(response.items);
       setTotalPages(response.meta.totalPages);
     } catch (err) {
-      console.error('Error loading polls:', err);
       toast.error(parseApiError(err));
       setPolls([]);
     } finally {
@@ -83,7 +82,6 @@ export const HomePage: React.FC = () => {
     } catch (error) {
       const message = parseApiError(error);
       toast.error(message);
-      console.error('Error closing poll:', error);
     } finally {
       setClosingPollId(null);
     }

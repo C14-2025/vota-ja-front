@@ -47,7 +47,6 @@ export const PollDetailsPage: React.FC = () => {
     } catch (error) {
       const message = parseApiError(error);
       toast.error(message);
-      console.error('Error loading poll:', error);
     } finally {
       setLoading(false);
     }
@@ -75,7 +74,6 @@ export const PollDetailsPage: React.FC = () => {
     } catch (error) {
       const message = parseApiError(error);
       toast.error(message);
-      console.error('Error voting:', error);
     } finally {
       setVoting(false);
     }
@@ -95,7 +93,6 @@ export const PollDetailsPage: React.FC = () => {
     } catch (error) {
       const message = parseApiError(error);
       toast.error(message);
-      console.error('Error canceling vote:', error);
     } finally {
       setCanceling(false);
     }
@@ -113,7 +110,6 @@ export const PollDetailsPage: React.FC = () => {
     } catch (error) {
       const message = parseApiError(error);
       toast.error(message);
-      console.error('Error closing poll:', error);
     } finally {
       setClosing(false);
     }
@@ -137,17 +133,6 @@ export const PollDetailsPage: React.FC = () => {
     if (total === 0) return 0;
     return Math.round((optionVotes / total) * 100);
   };
-
-  if (poll) {
-    console.log('Poll data:', {
-      totalVotes: poll.totalVotes,
-      options: poll.options.map((opt) => ({
-        text: opt.text,
-        votesCount: opt.votesCount,
-        raw: opt,
-      })),
-    });
-  }
 
   if (loading) {
     return (
