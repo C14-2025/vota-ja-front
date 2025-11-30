@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/AuthContext';
 import { createPoll } from '../../services/pollService';
+import { parseApiError } from '../../types/error';
 import { Button } from '../../common/Button';
 import { Input } from '../../common/Input';
 import { Text } from '../../common/Text';
@@ -84,9 +85,7 @@ export function CreatePollPage() {
       navigate('/home');
     } catch (error) {
       console.error('Error creating poll:', error);
-      toast.error(
-        error instanceof Error ? error.message : 'Erro ao criar votação'
-      );
+      toast.error(parseApiError(error));
     } finally {
       setIsLoading(false);
     }
