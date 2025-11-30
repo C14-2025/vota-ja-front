@@ -2,15 +2,15 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts';
-import { getPolls } from '../../services/pollService';
+import { getPolls, closePoll } from '../../services/pollService';
 import { parseApiError } from '../../types/error';
 import type { Poll } from '../../types/poll';
 import { Button } from '../../common/Button';
-import { ChartBar, CheckSquare, Calendar, User } from 'phosphor-react';
+import { ChartBar, CheckSquare, Calendar, User, Lock } from 'phosphor-react';
 import styles from './HomePage.module.css';
 
 export const HomePage: React.FC = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, userId, logout } = useAuth();
   const navigate = useNavigate();
 
   const [polls, setPolls] = useState<Poll[]>([]);
@@ -19,6 +19,7 @@ export const HomePage: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchInput, setSearchInput] = useState('');
+  const [closingPollId, setClosingPollId] = useState<string | null>(null);
 
   const itemsPerPage = 10;
 
@@ -43,6 +44,17 @@ export const HomePage: React.FC = () => {
   }, [loadPolls]);
 
   useEffect(() => {
+    const handleFocus = () => {
+      loadPolls();
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [loadPolls]);
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       setSearchQuery(searchInput);
       setCurrentPage(1);
@@ -58,6 +70,23 @@ export const HomePage: React.FC = () => {
 
   const handlePollClick = (pollId: string) => {
     navigate(`/polls/${pollId}`);
+  };
+
+  const handleClosePoll = async (pollId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+
+    try {
+      setClosingPollId(pollId);
+      await closePoll(pollId);
+      toast.success('Votação encerrada com sucesso!');
+      await loadPolls();
+    } catch (error) {
+      const message = parseApiError(error);
+      toast.error(message);
+      console.error('Error closing poll:', error);
+    } finally {
+      setClosingPollId(null);
+    }
   };
 
   const formatDate = (date: string) => {
@@ -155,23 +184,55 @@ export const HomePage: React.FC = () => {
               {polls.map((poll) => (
                 <div
                   key={poll.id}
-                  className={styles.pollCard}
+                  className={`${styles.pollCard} ${poll.status === 'CLOSED' ? styles.closedPoll : ''}`}
                   onClick={() => handlePollClick(poll.id)}
                 >
                   <div className={styles.pollHeader}>
-                    <h3 className={styles.pollTitle}>{poll.title}</h3>
-                    <span className={`${styles.pollType} ${styles[poll.type]}`}>
-                      {poll.type === 'public' ? 'Pública' : 'Privada'}
-                    </span>
+                    <div className={styles.pollTitleRow}>
+                      <h3 className={styles.pollTitle}>{poll.title}</h3>
+                      <div className={styles.pollHeaderRight}>
+                        {userId &&
+                          poll.creator &&
+                          String(userId) === String(poll.creator.id) &&
+                          poll.status === 'OPEN' && (
+                            <Button
+                              variant="secondary"
+                              size="small"
+                              onClick={(e) => handleClosePoll(poll.id, e)}
+                              disabled={closingPollId === poll.id}
+                            >
+                              {closingPollId === poll.id ? (
+                                'Encerrando...'
+                              ) : (
+                                <>
+                                  <Lock size={14} weight="bold" />
+                                  Encerrar
+                                </>
+                              )}
+                            </Button>
+                          )}
+                        <div className={styles.pollBadges}>
+                          <span
+                            className={`${styles.pollType} ${styles[poll.type]}`}
+                          >
+                            {poll.type === 'public' ? 'Pública' : 'Privada'}
+                          </span>
+                          {poll.status === 'CLOSED' && (
+                            <span
+                              className={`${styles.pollType} ${styles.closed}`}
+                            >
+                              Encerrada
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <p className={styles.pollDescription}>{poll.description}</p>
 
                   <div className={styles.pollFooter}>
                     <div className={styles.pollMeta}>
-                      <span>
-                        <ChartBar size={16} /> {poll.totalVotes || 0} votos
-                      </span>
                       <span>
                         <CheckSquare size={16} /> {poll.options.length} opções
                       </span>
