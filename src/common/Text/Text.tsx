@@ -12,7 +12,6 @@ export const Text: React.FC<TextProps> = ({
   style,
   ...rest
 }) => {
-  // Use only adapted variant names (title, subtitle, body, success, error, ...)
   const effectiveVariant = variant as keyof typeof styles;
   const variantClass = styles[effectiveVariant] || styles.body;
   const alignClass = align ? styles[align] : undefined;
