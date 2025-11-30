@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'react-toastify';
 import { useAuth } from '../../../contexts';
 import { Input, Button } from '../../../common';
 import { loginSchema } from '../../../utils/validation';
 import type { LoginFormData } from '../../../utils/validation';
+import { login as loginUser } from '../../../services/authService';
+import { parseApiError } from '../../../types/error';
 import styles from '../AuthPage.module.css';
 
 export const LoginPage: React.FC = () => {
@@ -23,14 +26,22 @@ export const LoginPage: React.FC = () => {
 
   const onSubmit = async (data: LoginFormData) => {
     setLoading(true);
-    console.log('Login:', data);
 
-    setTimeout(() => {
-      // Simula token de autenticação (substitua por chamada real à API)
-      const token = 'mock-token-' + Date.now();
-      login(token);
+    try {
+      const response = await loginUser({
+        email: data.email,
+        password: data.password,
+      });
+
+      login(response.accessToken);
+      toast.success('Login realizado com sucesso!');
       navigate('/home');
-    }, 1000);
+    } catch (error) {
+      console.error('Login error:', error);
+      toast.error(parseApiError(error));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
