@@ -26,7 +26,9 @@ export const LoginPage: React.FC = () => {
     console.log('Login:', data);
 
     setTimeout(() => {
-      login();
+      // Simula token de autenticação (substitua por chamada real à API)
+      const token = 'mock-token-' + Date.now();
+      login(token);
       navigate('/home');
     }, 1000);
   };
