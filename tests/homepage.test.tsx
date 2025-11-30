@@ -1,4 +1,10 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+  act,
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { HomePage } from '../src/pages/Home/HomePage';
@@ -102,13 +108,12 @@ describe('HomePage', () => {
       expect(screen.getByText('Logout')).toBeInTheDocument();
     });
 
-    it('deve renderizar a barra de busca e botões', async () => {
+    it('deve renderizar a barra de busca e botões', () => {
       renderHomePage();
 
       expect(
         screen.getByPlaceholderText('Buscar votações...')
       ).toBeInTheDocument();
-      expect(screen.getByText('Pesquisar')).toBeInTheDocument();
       expect(screen.getByText('Nova Votação')).toBeInTheDocument();
     });
 
@@ -249,7 +254,7 @@ describe('HomePage', () => {
       jest.useRealTimers();
     });
 
-    it('deve buscar ao clicar no botão Pesquisar', async () => {
+    it('deve buscar após digitar (com debounce)', async () => {
       renderHomePage();
 
       await waitFor(() => {
@@ -260,25 +265,10 @@ describe('HomePage', () => {
 
       const searchInput = screen.getByPlaceholderText('Buscar votações...');
       fireEvent.change(searchInput, { target: { value: 'teste' } });
-      fireEvent.click(screen.getByText('Pesquisar'));
 
-      await waitFor(() => {
-        expect(apiService.getPolls).toHaveBeenCalledTimes(2);
+      act(() => {
+        jest.advanceTimersByTime(500);
       });
-    });
-
-    it('deve buscar ao pressionar Enter', async () => {
-      renderHomePage();
-
-      await waitFor(() => {
-        expect(
-          screen.getByText('Melhor linguagem de programação')
-        ).toBeInTheDocument();
-      });
-
-      const searchInput = screen.getByPlaceholderText('Buscar votações...');
-      fireEvent.change(searchInput, { target: { value: 'teste' } });
-      fireEvent.keyDown(searchInput, { key: 'Enter' });
 
       await waitFor(() => {
         expect(apiService.getPolls).toHaveBeenCalledTimes(2);
@@ -334,7 +324,10 @@ describe('HomePage', () => {
 
       const searchInput = screen.getByPlaceholderText('Buscar votações...');
       fireEvent.change(searchInput, { target: { value: 'inexistente' } });
-      fireEvent.click(screen.getByText('Pesquisar'));
+
+      act(() => {
+        jest.advanceTimersByTime(500);
+      });
 
       await waitFor(() => {
         expect(
