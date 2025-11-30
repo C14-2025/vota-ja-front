@@ -1,19 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts';
 import { getPolls } from '../../services/pollService';
+import { parseApiError } from '../../types/error';
 import type { Poll } from '../../types/poll';
 import { Button } from '../../common/Button';
 import { ChartBar, CheckSquare, Calendar, User } from 'phosphor-react';
 import styles from './HomePage.module.css';
 
 export const HomePage: React.FC = () => {
-  const { logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
   const [polls, setPolls] = useState<Poll[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
@@ -24,24 +25,14 @@ export const HomePage: React.FC = () => {
   const loadPolls = useCallback(async () => {
     try {
       setLoading(true);
-      setError(null);
-      const response = await getPolls(currentPage, itemsPerPage);
+      const response = await getPolls(currentPage, itemsPerPage, searchQuery);
 
-      let filteredPolls = response.items;
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        filteredPolls = response.items.filter(
-          (poll) =>
-            poll.title.toLowerCase().includes(query) ||
-            poll.description.toLowerCase().includes(query)
-        );
-      }
-
-      setPolls(filteredPolls);
+      setPolls(response.items);
       setTotalPages(response.meta.totalPages);
     } catch (err) {
-      setError('Erro ao carregar votações. Tente novamente.');
       console.error('Error loading polls:', err);
+      toast.error(parseApiError(err));
+      setPolls([]);
     } finally {
       setLoading(false);
     }
@@ -82,9 +73,28 @@ export const HomePage: React.FC = () => {
       <header className={styles.header}>
         <div className={styles.brand}>HOME (Listagem de Votações)</div>
         <div className={styles.headerActions}>
-          <Button variant="secondary" size="small" onClick={handleLogout}>
-            Logout
-          </Button>
+          {isAuthenticated ? (
+            <Button variant="secondary" size="small" onClick={handleLogout}>
+              Logout
+            </Button>
+          ) : (
+            <>
+              <Button
+                variant="secondary"
+                size="small"
+                onClick={() => navigate('/login')}
+              >
+                Entrar
+              </Button>
+              <Button
+                variant="primary"
+                size="small"
+                onClick={() => navigate('/register')}
+              >
+                Cadastrar
+              </Button>
+            </>
+          )}
         </div>
       </header>
 
@@ -97,9 +107,11 @@ export const HomePage: React.FC = () => {
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
           />
-          <Button variant="primary" onClick={() => navigate('/polls/create')}>
-            Nova Votação
-          </Button>
+          {isAuthenticated && (
+            <Button variant="primary" onClick={() => navigate('/polls/create')}>
+              Nova Votação
+            </Button>
+          )}
         </div>
 
         {loading && (
@@ -108,16 +120,7 @@ export const HomePage: React.FC = () => {
           </div>
         )}
 
-        {error && (
-          <div className={styles.error}>
-            <p>{error}</p>
-            <Button variant="primary" size="small" onClick={loadPolls}>
-              Tentar Novamente
-            </Button>
-          </div>
-        )}
-
-        {!loading && !error && polls.length === 0 && (
+        {!loading && polls.length === 0 && (
           <div className={styles.empty}>
             <div className={styles.emptyIcon}>
               <ChartBar size={48} weight="thin" />
@@ -126,9 +129,11 @@ export const HomePage: React.FC = () => {
             <div className={styles.emptySubtext}>
               {searchQuery
                 ? 'Tente buscar por outros termos'
-                : 'Crie sua primeira votação para começar'}
+                : isAuthenticated
+                  ? 'Crie sua primeira votação para começar'
+                  : 'Faça login para criar votações'}
             </div>
-            {!searchQuery && (
+            {!searchQuery && isAuthenticated && (
               <Button
                 variant="primary"
                 onClick={() => navigate('/polls/create')}
@@ -136,10 +141,15 @@ export const HomePage: React.FC = () => {
                 Criar Votação
               </Button>
             )}
+            {!searchQuery && !isAuthenticated && (
+              <Button variant="primary" onClick={() => navigate('/login')}>
+                Fazer Login
+              </Button>
+            )}
           </div>
         )}
 
-        {!loading && !error && polls.length > 0 && (
+        {!loading && polls.length > 0 && (
           <>
             <div className={styles.pollsList}>
               {polls.map((poll) => (
