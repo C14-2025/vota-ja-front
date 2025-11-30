@@ -42,7 +42,7 @@ export const Input: React.FC<InputProps> = ({
   return (
     <div className={inputWrapperClass}>
       {label && (
-        <label className={styles.label}>
+        <label htmlFor={rest.id} className={styles.label}>
           {label}
           {rest.required && <span className={styles.required}> *</span>}
         </label>

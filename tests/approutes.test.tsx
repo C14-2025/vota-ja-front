@@ -13,7 +13,7 @@ describe('AppRoutes', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText('Login')).toBeTruthy();
-    expect(screen.getByText('Faça login para acessar o sistema')).toBeTruthy();
+    expect(screen.getByText('Vota Já')).toBeTruthy();
+    expect(screen.getByText('LOGIN')).toBeTruthy();
   });
 });
