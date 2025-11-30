@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAuth } from '../../contexts';
-import { Input, Button } from '../../common';
-import { loginSchema } from '../../utils/validation';
-import type { LoginFormData } from '../../utils/validation';
-import styles from './LoginPage.module.css';
+import { useAuth } from '../../../contexts';
+import { Input, Button } from '../../../common';
+import { loginSchema } from '../../../utils/validation';
+import type { LoginFormData } from '../../../utils/validation';
+import styles from '../AuthPage.module.css';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();

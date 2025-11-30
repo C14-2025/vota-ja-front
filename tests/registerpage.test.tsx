@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from '../src/contexts/AuthContext';
-import { RegisterPage } from '../src/pages/Register/RegisterPage';
+import { RegisterPage } from '../src/pages/Auth/Register/RegisterPage';
 
 const MockRegisterPage = () => (
   <BrowserRouter>
