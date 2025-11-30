@@ -67,7 +67,10 @@ export const HomePage: React.FC = () => {
     navigate('/login');
   };
 
-  const handlePollClick = (pollId: string) => {
+  const handlePollClick = (pollId: string, event: React.MouseEvent) => {
+    if ((event.target as HTMLElement).closest('button')) {
+      return;
+    }
     navigate(`/polls/${pollId}`);
   };
 
@@ -183,7 +186,7 @@ export const HomePage: React.FC = () => {
                 <div
                   key={poll.id}
                   className={`${styles.pollCard} ${poll.status === 'CLOSED' ? styles.closedPoll : ''}`}
-                  onClick={() => handlePollClick(poll.id)}
+                  onClick={(e) => handlePollClick(poll.id, e)}
                 >
                   <div className={styles.pollHeader}>
                     <div className={styles.pollTitleRow}>
