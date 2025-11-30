@@ -211,8 +211,34 @@ export async function getPollById(id: string, token?: string): Promise<Poll> {
 
 export async function createPoll(
   data: CreatePollRequest,
-  token: string
+  _token: string
 ): Promise<CreatePollResponse> {
+  // Simula delay de API
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  // Mock: Cria uma votação simulada
+  const newPoll: CreatePollResponse = {
+    id: Math.random().toString(36).substring(7),
+    title: data.title,
+    description: data.description,
+    type: data.type,
+    options: data.options.map((opt, index) => ({
+      id: (index + 1).toString(),
+      text: opt,
+      createdAt: new Date().toISOString(),
+    })),
+    creator: {
+      id: '1',
+      name: 'Usuário Mock',
+      email: 'usuario@example.com',
+    },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  return newPoll;
+
+  /* Código real da API (descomentar quando o backend estiver pronto):
   const response = await fetch(`${API_BASE_URL}/polls`, {
     method: 'POST',
     headers: {
@@ -228,6 +254,7 @@ export async function createPoll(
   }
 
   return response.json();
+  */
 }
 
 export default { getPolls, getPollById, createPoll };
