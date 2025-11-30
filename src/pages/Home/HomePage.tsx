@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts';
-import { getPolls, closePoll } from '../../services/pollService';
+import { getPolls, closePoll } from '../../services';
 import { parseApiError } from '../../types/error';
 import type { Poll } from '../../types/poll';
 import { Button } from '../../common/Button';
