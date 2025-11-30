@@ -22,6 +22,7 @@
     "react-hook-form": "^7.67.0",
     "react-router-dom": "^6.20.1",
     "react-toastify": "^11.0.5",
+    "socket.io-client": "^4.8.1",
     "zod": "^4.1.13"
   },
   "devDependencies": {
