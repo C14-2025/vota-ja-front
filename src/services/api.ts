@@ -1,4 +1,9 @@
-import type { Poll, PaginatedResponse } from '../types/poll';
+import type {
+  Poll,
+  PaginatedResponse,
+  CreatePollRequest,
+  CreatePollResponse,
+} from '../types/poll';
 
 const API_BASE_URL = 'http://localhost:5000';
 
@@ -204,4 +209,25 @@ export async function getPollById(id: string, token?: string): Promise<Poll> {
   return response.json();
 }
 
-export default { getPolls, getPollById };
+export async function createPoll(
+  data: CreatePollRequest,
+  token: string
+): Promise<CreatePollResponse> {
+  const response = await fetch(`${API_BASE_URL}/polls`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Failed to create poll');
+  }
+
+  return response.json();
+}
+
+export default { getPolls, getPollById, createPoll };
