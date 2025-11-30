@@ -3,6 +3,8 @@ import { AuthProvider, useAuth } from '../src/contexts/AuthContext';
 
 describe('AuthContext', () => {
   it('should start with isAuthenticated as false', () => {
+    localStorage.clear();
+
     const TestComponent = () => {
       const { isAuthenticated } = useAuth();
       return (
@@ -20,12 +22,14 @@ describe('AuthContext', () => {
   });
 
   it('should set isAuthenticated to true when login is called', () => {
+    localStorage.clear();
+
     const TestComponent = () => {
       const { isAuthenticated, login } = useAuth();
       return (
         <div>
           <span>{isAuthenticated ? 'authenticated' : 'not authenticated'}</span>
-          <button onClick={login}>Login</button>
+          <button onClick={() => login()}>Login</button>
         </div>
       );
     };
@@ -46,12 +50,14 @@ describe('AuthContext', () => {
   });
 
   it('should set isAuthenticated to false when logout is called', () => {
+    localStorage.clear();
+
     const TestComponent = () => {
       const { isAuthenticated, login, logout } = useAuth();
       return (
         <div>
           <span>{isAuthenticated ? 'authenticated' : 'not authenticated'}</span>
-          <button onClick={login}>Login</button>
+          <button onClick={() => login()}>Login</button>
           <button onClick={logout}>Logout</button>
         </div>
       );
