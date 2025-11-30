@@ -16,9 +16,11 @@ export interface Poll {
   title: string;
   description: string;
   type: 'public' | 'private';
+  status: 'OPEN' | 'CLOSED';
   options: PollOption[];
   creator: User;
   totalVotes?: number;
+  votedOption?: string | null;
   createdAt: string;
   updatedAt: string;
 }
