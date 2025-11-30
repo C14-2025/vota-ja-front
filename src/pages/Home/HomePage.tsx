@@ -65,11 +65,6 @@ export const HomePage: React.FC = () => {
     navigate('/login');
   };
 
-  const handleSearch = () => {
-    setSearchQuery(searchInput);
-    setCurrentPage(1);
-  };
-
   const handlePollClick = (pollId: string) => {
     navigate(`/polls/${pollId}`);
   };
@@ -101,11 +96,7 @@ export const HomePage: React.FC = () => {
             className={styles.searchInput}
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           />
-          <Button variant="secondary" onClick={handleSearch}>
-            Pesquisar
-          </Button>
           <Button variant="primary" onClick={() => navigate('/polls/create')}>
             Nova Votação
           </Button>
