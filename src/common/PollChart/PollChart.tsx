@@ -29,16 +29,22 @@ interface PollChartProps {
   defaultType?: 'bar' | 'doughnut';
 }
 
-export const PollChart: React.FC<PollChartProps> = ({ poll, defaultType = 'doughnut' }) => {
+export const PollChart: React.FC<PollChartProps> = ({
+  poll,
+  defaultType = 'doughnut',
+}) => {
   const [chartType, setChartType] = useState<'bar' | 'doughnut'>(defaultType);
   if (poll.status !== 'CLOSED') {
     return null;
   }
 
-  const optionsWithVotes = poll.options.filter(option => (option.votesCount || 0) > 0);
-  const labels = optionsWithVotes.map(option => option.text);
-  const voteCounts = optionsWithVotes.map(option => option.votesCount || 0);
-  const totalVotes = poll.totalVotes || voteCounts.reduce((sum, count) => sum + count, 0);
+  const optionsWithVotes = poll.options.filter(
+    (option) => (option.votesCount || 0) > 0
+  );
+  const labels = optionsWithVotes.map((option) => option.text);
+  const voteCounts = optionsWithVotes.map((option) => option.votesCount || 0);
+  const totalVotes =
+    poll.totalVotes || voteCounts.reduce((sum, count) => sum + count, 0);
 
   // Cores vibrantes para o gráfico
   const backgroundColors = [
@@ -51,10 +57,12 @@ export const PollChart: React.FC<PollChartProps> = ({ poll, defaultType = 'dough
     '#FF6384',
     '#C9CBCF',
     '#4BC0C0',
-    '#36A2EB'
+    '#36A2EB',
   ];
 
-  const borderColors = backgroundColors.map(color => color.replace('1)', '1)'));
+  const borderColors = backgroundColors.map((color) =>
+    color.replace('1)', '1)')
+  );
 
   const chartData = {
     labels,
@@ -87,7 +95,8 @@ export const PollChart: React.FC<PollChartProps> = ({ poll, defaultType = 'dough
         callbacks: {
           label: function (context: any) {
             const value = context.raw;
-            const percentage = totalVotes > 0 ? ((value / totalVotes) * 100).toFixed(1) : '0';
+            const percentage =
+              totalVotes > 0 ? ((value / totalVotes) * 100).toFixed(1) : '0';
             return `${context.label}: ${value} votos (${percentage}%)`;
           },
         },
@@ -150,7 +159,8 @@ export const PollChart: React.FC<PollChartProps> = ({ poll, defaultType = 'dough
 
       <div className={styles.statisticsGrid}>
         {optionsWithVotes.map((option, index) => {
-          const percentage = totalVotes > 0 ? ((option.votesCount || 0) / totalVotes) * 100 : 0;
+          const percentage =
+            totalVotes > 0 ? ((option.votesCount || 0) / totalVotes) * 100 : 0;
           return (
             <div key={option.id} className={styles.statItem}>
               <div
