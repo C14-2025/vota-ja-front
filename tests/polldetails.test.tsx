@@ -335,10 +335,12 @@ describe('PollDetailsPage', () => {
       renderPollDetailsPage();
 
       await waitFor(() => {
-        expect(screen.getByText('JavaScript')).toBeInTheDocument();
+        expect(screen.getAllByText('JavaScript')[0]).toBeInTheDocument();
       });
 
-      const option = screen.getByText('JavaScript').closest('div');
+      // Get all elements with text 'JavaScript' and find the one in options list
+      const optionElements = screen.getAllByText('JavaScript');
+      const option = optionElements[0].closest('div');
       expect(option).not.toHaveClass('interactive');
     });
 

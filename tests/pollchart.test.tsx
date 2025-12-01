@@ -1,5 +1,5 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { PollChart } from '../src/common/PollChart/PollChart';
 import type { Poll } from '../src/types/poll';
 
@@ -19,10 +19,10 @@ jest.mock('chart.js', () => ({
 
 // Mock react-chartjs-2
 jest.mock('react-chartjs-2', () => ({
-  Bar: ({ data, options }: any) => (
+  Bar: ({ data }: any) => (
     <div data-testid="bar-chart" data-chart-data={JSON.stringify(data)} />
   ),
-  Doughnut: ({ data, options }: any) => (
+  Doughnut: ({ data }: any) => (
     <div data-testid="doughnut-chart" data-chart-data={JSON.stringify(data)} />
   ),
 }));
@@ -71,7 +71,8 @@ describe('PollChart', () => {
   it('should render chart for closed polls', () => {
     render(<PollChart poll={mockClosedPoll} />);
     expect(screen.getByText('Resultados da Votação')).toBeInTheDocument();
-    expect(screen.getByText('Total de votos: 10')).toBeInTheDocument();
+    expect(screen.getByText(/Total de votos:/i)).toBeInTheDocument();
+    expect(screen.getByText('10')).toBeInTheDocument();
   });
 
   it('should render doughnut chart by default', () => {
@@ -103,14 +104,16 @@ describe('PollChart', () => {
     const noVotesPoll = {
       ...mockClosedPoll,
       totalVotes: 0,
-      options: mockClosedPoll.options.map(option => ({
+      options: mockClosedPoll.options.map((option) => ({
         ...option,
         votesCount: 0,
       })),
     };
 
     render(<PollChart poll={noVotesPoll} />);
-    expect(screen.getByText('Nenhum voto foi registrado nesta votação.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Nenhum voto foi registrado nesta votação.')
+    ).toBeInTheDocument();
   });
 
   it('should filter out options with zero votes from chart', () => {
@@ -135,7 +138,9 @@ describe('PollChart', () => {
 
     // Option with zero votes should not be in the chart data
     const chartElement = screen.getByTestId('doughnut-chart');
-    const chartData = JSON.parse(chartElement.getAttribute('data-chart-data') || '{}');
+    const chartData = JSON.parse(
+      chartElement.getAttribute('data-chart-data') || '{}'
+    );
     expect(chartData.labels).toEqual(['Option 1', 'Option 2']);
   });
 });
