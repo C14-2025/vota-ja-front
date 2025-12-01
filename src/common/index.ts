@@ -8,3 +8,5 @@ export * from './Button';
 export { Button } from './Button';
 export { AppToast } from './Toast/Toast';
 export { toast as appToast } from './Toast/index';
+export * from './PollChart';
+export { PollChart } from './PollChart';

@@ -13,7 +13,7 @@ import {
   X,
   Lock,
 } from 'phosphor-react';
-import { Button } from '../../common/Button';
+import { Button, PollChart } from '../../common';
 import { useAuth } from '../../contexts/AuthContext';
 import {
   getPollById,
@@ -329,11 +329,9 @@ export const PollDetailsPage: React.FC = () => {
               return (
                 <div
                   key={option.id}
-                  className={`${styles.optionCard} ${
-                    canVote ? styles.interactive : ''
-                  } ${isSelected ? styles.selected : ''} ${
-                    hasVoted || !isAuthenticated ? styles.voted : ''
-                  } ${isUserVoted ? styles.userVoted : ''}`}
+                  className={`${styles.optionCard} ${canVote ? styles.interactive : ''
+                    } ${isSelected ? styles.selected : ''} ${hasVoted || !isAuthenticated ? styles.voted : ''
+                    } ${isUserVoted ? styles.userVoted : ''}`}
                   onClick={() => canVote && setSelectedOption(option.id)}
                 >
                   <div className={styles.optionContent}>
@@ -374,6 +372,9 @@ export const PollDetailsPage: React.FC = () => {
             })}
           </div>
         </div>
+
+        {/* Gráfico dos resultados - aparece apenas para votações encerradas */}
+        {poll.status === 'CLOSED' && <PollChart poll={poll} />}
 
         {poll.status === 'CLOSED' && (
           <div className={styles.closedMessage}>
