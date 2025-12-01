@@ -16,8 +16,10 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "axios": "^1.6.2",
+    "chart.js": "^4.5.1",
     "phosphor-react": "^1.4.1",
     "react": "^19.1.1",
+    "react-chartjs-2": "^5.3.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.67.0",
     "react-router-dom": "^6.20.1",
