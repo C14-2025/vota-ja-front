@@ -329,9 +329,11 @@ export const PollDetailsPage: React.FC = () => {
               return (
                 <div
                   key={option.id}
-                  className={`${styles.optionCard} ${canVote ? styles.interactive : ''
-                    } ${isSelected ? styles.selected : ''} ${hasVoted || !isAuthenticated ? styles.voted : ''
-                    } ${isUserVoted ? styles.userVoted : ''}`}
+                  className={`${styles.optionCard} ${
+                    canVote ? styles.interactive : ''
+                  } ${isSelected ? styles.selected : ''} ${
+                    hasVoted || !isAuthenticated ? styles.voted : ''
+                  } ${isUserVoted ? styles.userVoted : ''}`}
                   onClick={() => canVote && setSelectedOption(option.id)}
                 >
                   <div className={styles.optionContent}>
