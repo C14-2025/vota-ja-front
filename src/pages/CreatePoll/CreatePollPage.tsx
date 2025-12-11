@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/AuthContext';
 import { createPoll } from '../../services/pollService';
 import { parseApiError } from '../../types/error';
+import type { CreatePollRequest } from '../../types/poll';
 import { Button } from '../../common/Button';
 import { Input } from '../../common/Input';
 import { Text } from '../../common/Text';
@@ -21,6 +22,7 @@ const createPollSchema = z
     option2: z.string().min(1, 'Opção 2 é obrigatória'),
     option3: z.string().optional(),
     option4: z.string().optional(),
+    expiresAt: z.string().optional(),
   })
   .refine(
     (data) => {
@@ -35,6 +37,17 @@ const createPollSchema = z
     {
       message: 'Deve ter no mínimo 2 opções',
       path: ['option2'],
+    }
+  )
+  .refine(
+    (data) => {
+      if (!data.expiresAt) return true;
+      const expirationDate = new Date(data.expiresAt);
+      return expirationDate > new Date();
+    },
+    {
+      message: 'A data de expiração deve ser no futuro',
+      path: ['expiresAt'],
     }
   );
 
@@ -74,12 +87,18 @@ export function CreatePollPage() {
         data.option4,
       ].filter((opt): opt is string => !!opt && opt.trim().length > 0);
 
-      await createPoll({
+      const pollData: CreatePollRequest = {
         title: data.title,
         description: data.description,
         type: data.type,
         options,
-      });
+      };
+
+      if (data.expiresAt) {
+        pollData.expiresAt = new Date(data.expiresAt).toISOString();
+      }
+
+      await createPoll(pollData);
 
       toast.success('Votação criada com sucesso!');
       navigate('/home');
@@ -105,19 +124,19 @@ export function CreatePollPage() {
           </Button>
         </div>
         <div className={styles.formContent}>
-          <div className={styles.topSection}>
-            <div className={styles.field}>
-              <label htmlFor="title" className={styles.label}>
-                Título
-              </label>
-              <Input
-                id="title"
-                {...register('title')}
-                placeholder="Digite o título da votação"
-                error={errors.title?.message}
-              />
-            </div>
+          <div className={styles.field}>
+            <label htmlFor="title" className={styles.label}>
+              Título
+            </label>
+            <Input
+              id="title"
+              {...register('title')}
+              placeholder="Digite o título da votação"
+              error={errors.title?.message}
+            />
+          </div>
 
+          <div className={styles.topSection}>
             <div className={styles.field}>
               <label className={styles.label}>Tipo</label>
               <div className={styles.radioGroup}>
@@ -145,6 +164,21 @@ export function CreatePollPage() {
                   {errors.type.message}
                 </Text>
               )}
+            </div>
+
+            <div className={styles.field}>
+              <label htmlFor="expiresAt" className={styles.label}>
+                Data de Expiração (opcional)
+              </label>
+              <Input
+                id="expiresAt"
+                type="datetime-local"
+                {...register('expiresAt')}
+                error={errors.expiresAt?.message}
+              />
+              <Text variant="small" className={styles.helper}>
+                Se informado, a votação será automaticamente encerrada nesta data
+              </Text>
             </div>
           </div>
 

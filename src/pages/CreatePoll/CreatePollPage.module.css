@@ -51,13 +51,8 @@
   align-items: flex-start;
 }
 
-.topSection > .field:first-child {
+.topSection>.field {
   flex: 1;
-  margin-bottom: 0;
-}
-
-.topSection > .field:last-child {
-  flex-shrink: 0;
   margin-bottom: 0;
 }
 
@@ -129,6 +124,13 @@
   margin-top: 0.25rem;
   display: block;
   font-size: 0.875rem;
+}
+
+.helper {
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 0.25rem;
+  display: block;
+  font-size: 0.8rem;
 }
 
 .optionsGrid {

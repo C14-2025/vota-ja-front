@@ -92,6 +92,11 @@
   color: #9ca3af;
 }
 
+.badge.expired {
+  background: rgba(249, 115, 22, 0.15);
+  color: #f97316;
+}
+
 .description {
   font-size: 0.875rem;
   color: var(--muted);
@@ -121,6 +126,12 @@
   color: var(--foreground);
 }
 
+.timeRemaining {
+  color: var(--muted);
+  font-weight: normal;
+  font-size: 0.9em;
+}
+
 /* Options Section */
 .optionsSection {
   padding: 2rem;
@@ -142,11 +153,9 @@
 }
 
 .optionCard {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.05),
-    rgba(255, 255, 255, 0.02)
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.02));
   border: 2px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
   padding: 1.5rem;
@@ -162,12 +171,10 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(99, 102, 241, 0.3),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(99, 102, 241, 0.3),
+      transparent);
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -177,11 +184,9 @@
 }
 
 .optionCard.interactive:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(99, 102, 241, 0.08),
-    rgba(139, 92, 246, 0.05)
-  );
+  background: linear-gradient(135deg,
+      rgba(99, 102, 241, 0.08),
+      rgba(139, 92, 246, 0.05));
   border-color: rgba(99, 102, 241, 0.5);
   box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
   transform: translateY(-2px);
@@ -192,11 +197,9 @@
 }
 
 .optionCard.selected {
-  background: linear-gradient(
-    135deg,
-    rgba(99, 102, 241, 0.2),
-    rgba(139, 92, 246, 0.15)
-  );
+  background: linear-gradient(135deg,
+      rgba(99, 102, 241, 0.2),
+      rgba(139, 92, 246, 0.15));
   border-color: var(--primary);
   box-shadow:
     0 4px 16px rgba(99, 102, 241, 0.3),
@@ -210,19 +213,15 @@
 
 .optionCard.voted {
   cursor: default;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.03),
-    rgba(255, 255, 255, 0.01)
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.03),
+      rgba(255, 255, 255, 0.01));
 }
 
 .optionCard.userVoted {
-  background: linear-gradient(
-    135deg,
-    rgba(99, 102, 241, 0.15),
-    rgba(139, 92, 246, 0.1)
-  ) !important;
+  background: linear-gradient(135deg,
+      rgba(99, 102, 241, 0.15),
+      rgba(139, 92, 246, 0.1)) !important;
   border-color: var(--primary) !important;
   box-shadow:
     0 4px 20px rgba(99, 102, 241, 0.4),
@@ -231,12 +230,10 @@
 
 .optionCard.userVoted::before {
   opacity: 1 !important;
-  background: linear-gradient(
-    90deg,
-    var(--primary),
-    #8b5cf6,
-    var(--primary)
-  ) !important;
+  background: linear-gradient(90deg,
+      var(--primary),
+      #8b5cf6,
+      var(--primary)) !important;
 }
 
 .optionContent {
@@ -279,9 +276,11 @@
   0% {
     transform: scale(0);
   }
+
   50% {
     transform: scale(1.2);
   }
+
   100% {
     transform: scale(1);
   }
@@ -317,6 +316,7 @@
   0% {
     background-position: 200% center;
   }
+
   100% {
     background-position: -200% center;
   }
@@ -372,11 +372,9 @@
   align-items: center;
   gap: 1.5rem;
   padding: 2rem;
-  background: linear-gradient(
-    135deg,
-    rgba(99, 102, 241, 0.08),
-    rgba(139, 92, 246, 0.05)
-  );
+  background: linear-gradient(135deg,
+      rgba(99, 102, 241, 0.08),
+      rgba(139, 92, 246, 0.05));
   border-top: 2px solid rgba(99, 102, 241, 0.3);
   position: relative;
   overflow: hidden;
@@ -392,7 +390,7 @@
   background: linear-gradient(90deg, transparent, var(--primary), transparent);
 }
 
-.votedMessage > svg {
+.votedMessage>svg {
   color: var(--primary);
   background: rgba(99, 102, 241, 0.1);
   padding: 0.75rem;
@@ -400,7 +398,7 @@
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
 }
 
-.votedMessage > div {
+.votedMessage>div {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -428,11 +426,9 @@
   align-items: center;
   gap: 1rem;
   padding: 2rem;
-  background: linear-gradient(
-    135deg,
-    rgba(156, 163, 175, 0.08),
-    rgba(156, 163, 175, 0.05)
-  );
+  background: linear-gradient(135deg,
+      rgba(156, 163, 175, 0.08),
+      rgba(156, 163, 175, 0.05));
   border-top: 2px solid rgba(156, 163, 175, 0.3);
   position: relative;
   overflow: hidden;
@@ -460,6 +456,34 @@
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--muted);
+  margin: 0;
+  text-align: center;
+}
+
+.expiredMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  margin: 2rem;
+  background: rgba(249, 115, 22, 0.08);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  border-radius: 8px;
+  color: #f97316;
+}
+
+.expiredMessage svg {
+  background: rgba(249, 115, 22, 0.15);
+  padding: 0.75rem;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
+}
+
+.expiredMessage p {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #f97316;
   margin: 0;
   text-align: center;
 }

@@ -23,6 +23,7 @@ export interface Poll {
   votedOption?: string | null;
   createdAt: string;
   updatedAt: string;
+  expiresAt?: string;
 }
 
 export interface PaginatedResponse<T> {
@@ -41,6 +42,7 @@ export interface CreatePollRequest {
   description: string;
   type: 'public' | 'private';
   options: string[];
+  expiresAt?: string;
 }
 
 export interface CreatePollResponse {

@@ -12,6 +12,7 @@ import {
   Globe,
   X,
   Lock,
+  Clock,
 } from 'phosphor-react';
 import { Button, PollChart } from '../../common';
 import { useAuth } from '../../contexts/AuthContext';
@@ -157,11 +158,44 @@ export const PollDetailsPage: React.FC = () => {
     }
   };
 
+  const isExpired = () => {
+    if (!poll?.expiresAt) return false;
+    return new Date() > new Date(poll.expiresAt);
+  };
+
+  const getTimeToExpire = () => {
+    if (!poll?.expiresAt) return '';
+
+    const now = new Date();
+    const expiry = new Date(poll.expiresAt);
+    const diff = expiry.getTime() - now.getTime();
+
+    if (diff <= 0) return 'Expirada';
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+    if (days > 0) return `${days}d ${hours}h`;
+    if (hours > 0) return `${hours}h ${minutes}m`;
+    return `${minutes}m`;
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
+    });
+  };
+
+  const formatDateWithTime = (dateString: string) => {
+    return new Date(dateString).toLocaleString('pt-BR', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     });
   };
 
@@ -220,7 +254,8 @@ export const PollDetailsPage: React.FC = () => {
   const hasVoted = !!userVotedOptionId;
   const isOwner =
     userId && poll.creator && String(userId) === String(poll.creator.id);
-  const canVote = isAuthenticated && !hasVoted && poll.status === 'OPEN';
+  const pollExpired = isExpired();
+  const canVote = isAuthenticated && !hasVoted && poll.status === 'OPEN' && !pollExpired;
 
   return (
     <div className={styles.container}>
@@ -280,6 +315,12 @@ export const PollDetailsPage: React.FC = () => {
                       Encerrada
                     </span>
                   )}
+                  {pollExpired && poll.status === 'OPEN' && (
+                    <span className={`${styles.badge} ${styles.expired}`}>
+                      <Clock size={12} weight="fill" />
+                      Expirada
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -314,6 +355,19 @@ export const PollDetailsPage: React.FC = () => {
                 {poll.options.length === 1 ? 'opção' : 'opções'}
               </span>
             </div>
+            {poll.expiresAt && (
+              <div className={styles.metaItem}>
+                <Clock size={16} weight="bold" />
+                <span>
+                  Expira em {formatDateWithTime(poll.expiresAt)}
+                  {poll.status === 'OPEN' && (
+                    <span className={styles.timeRemaining}>
+                      {' '}({getTimeToExpire()})
+                    </span>
+                  )}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -329,11 +383,9 @@ export const PollDetailsPage: React.FC = () => {
               return (
                 <div
                   key={option.id}
-                  className={`${styles.optionCard} ${
-                    canVote ? styles.interactive : ''
-                  } ${isSelected ? styles.selected : ''} ${
-                    hasVoted || !isAuthenticated ? styles.voted : ''
-                  } ${isUserVoted ? styles.userVoted : ''}`}
+                  className={`${styles.optionCard} ${canVote ? styles.interactive : ''
+                    } ${isSelected ? styles.selected : ''} ${hasVoted || !isAuthenticated ? styles.voted : ''
+                    } ${isUserVoted ? styles.userVoted : ''}`}
                   onClick={() => canVote && setSelectedOption(option.id)}
                 >
                   <div className={styles.optionContent}>
@@ -385,7 +437,14 @@ export const PollDetailsPage: React.FC = () => {
           </div>
         )}
 
-        {poll.status === 'OPEN' && !isAuthenticated && (
+        {poll.status === 'OPEN' && pollExpired && (
+          <div className={styles.expiredMessage}>
+            <Clock size={24} weight="bold" />
+            <p>Esta votação expirou e será encerrada automaticamente</p>
+          </div>
+        )}
+
+        {poll.status === 'OPEN' && !isAuthenticated && !pollExpired && (
           <div className={styles.loginPrompt}>
             <p>Faça login para votar nesta votação</p>
             <Button variant="primary" onClick={() => navigate('/login')}>
@@ -394,7 +453,7 @@ export const PollDetailsPage: React.FC = () => {
           </div>
         )}
 
-        {poll.status === 'OPEN' && isAuthenticated && (
+        {poll.status === 'OPEN' && isAuthenticated && !pollExpired && (
           <div className={styles.actions}>
             {hasVoted ? (
               <Button
